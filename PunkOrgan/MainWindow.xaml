@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PunkOrgan"
         mc:Ignorable="d"
-        Title="Z+nht - PunkOrgan" Height="350" Width="525">
+        Title="Z+nht - PunkOrgan" Height="350" Width="611">
     <Grid Margin="0,0,2,0">
         <Slider x:Name="slider_DrawBar1" Value="{Binding Drawbars[1].Volume}" HorizontalAlignment="Left" Height="148" Margin="141,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
         <Slider x:Name="slider_DrawBar2" Value="{Binding Drawbars[2].Volume}" HorizontalAlignment="Left" Height="148" Margin="166,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
@@ -16,7 +16,7 @@
         <Slider x:Name="slider_DrawBar7" Value="{Binding Drawbars[7].Volume}" HorizontalAlignment="Left" Height="148" Margin="291,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
         <Slider x:Name="slider_DrawBar8" Value="{Binding Drawbars[8].Volume}" HorizontalAlignment="Left" Height="148" Margin="316,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
         <Slider x:Name="slider_DrawBar9" Value="{Binding Drawbars[9].Volume}" HorizontalAlignment="Left" Height="148" Margin="341,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
-        <Slider x:Name="slider_Freq" Value="{Binding Freq}" HorizontalAlignment="Left" Margin="10,277,0,0" VerticalAlignment="Top" Width="495" Maximum="1000" Minimum="20" SmallChange="1"/>
+        <Slider x:Name="slider_Freq" Value="{Binding Freq}" HorizontalAlignment="Left" Margin="10,277,0,0" VerticalAlignment="Top" Width="581" Maximum="1000" Minimum="20" SmallChange="1"/>
         <Slider x:Name="slider_Leslie_Freq" Value="{Binding Leslie_Freq}" HorizontalAlignment="Left" Height="148" Margin="460,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
         <Slider x:Name="slider_Leslie_Rate" Value="{Binding Leslie_Rate}" HorizontalAlignment="Left" Height="148" Margin="485,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="50"/>
         <Slider x:Name="slider_OverDrive" Value="{Binding OverDrive}" HorizontalAlignment="Left" Height="148" Margin="412,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="9"/>
@@ -146,6 +146,11 @@
                 </TransformGroup>
             </Label.RenderTransform>
         </Label>
+        <Slider x:Name="slider_Echo_Freq" Value="{Binding Echo_Freq}" HorizontalAlignment="Left" Height="148" Margin="538,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="19999" Minimum="1" IsDirectionReversed="True"/>
+        <Slider x:Name="slider_Echo_Rate" Value="{Binding Echo_Rate}" HorizontalAlignment="Left" Height="148" Margin="563,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="100"/>
+        <Label x:Name="label1_Copy" Content="Echo" HorizontalAlignment="Left" Margin="538,184,0,0" VerticalAlignment="Top" Height="25"/>
+        <Label x:Name="label2_Copy1" Content="Delay" HorizontalAlignment="Left" Margin="524,158,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label2_Copy2" Content="Rate" HorizontalAlignment="Left" Margin="558,158,0,0" VerticalAlignment="Top"/>
 
 
 

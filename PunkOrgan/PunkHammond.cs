@@ -17,6 +17,7 @@ namespace PunkOrgan
     {
         private static readonly double halfnotemultiplier = Math.Pow(2, ((double)1 / (double)12));
         private static readonly int maxPolyPhony = 10;
+        private static readonly int echobuffersize = 20000;
 
         public DrawBar[] Drawbars { get; set; }
 
@@ -24,6 +25,11 @@ namespace PunkOrgan
 
         public int Leslie_Rate { get; set; }
         public int Leslie_Freq { get; set; }
+
+        public int Echo_Rate { get; set; }
+        public int Echo_Freq { get; set; }
+
+        private short[] echobuffer;
 
         private double[] Notes;
 
@@ -54,6 +60,10 @@ namespace PunkOrgan
 
             Leslie_Freq = 3;
             Leslie_Rate = 1;
+
+            echobuffer = new short[echobuffersize];
+            Echo_Freq = 10000;
+            Echo_Rate = 50;
 
             CurrentPolyphony = 3;
 
@@ -182,6 +192,7 @@ namespace PunkOrgan
 
 
         double Leslie_Phase = 0;
+        int echophase = 0;
 
         public override int Read(short[] buffer, int offset, int sampleCount)
         {
@@ -208,11 +219,22 @@ namespace PunkOrgan
                 }
                 //The extra 10 divider (minus overdrive) is for the drawbars. They have 10 position here.
                 currentsamplevalue = currentsamplevalue / 9 * short.MaxValue / (10 - OverDrive) / CurrentPolyphony;
+
+                currentsamplevalue = currentsamplevalue + echobuffer[limitechophase(echophase + Echo_Freq)] * Echo_Rate / 100;
+
                 if (currentsamplevalue > short.MaxValue) currentsamplevalue = currentsamplevalue - short.MaxValue;
 
                 buffer[sample + offset] = (short)currentsamplevalue;
+                echobuffer[echophase]= (short)currentsamplevalue;
+                echophase++;
+                echophase = limitechophase(echophase);
             }
             return sampleCount;
+        }
+
+        private int limitechophase(int phase)
+        {
+            return phase < echobuffersize ? phase : phase - echobuffersize;
         }
     }
 }
