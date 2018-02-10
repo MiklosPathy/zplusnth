@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PunkOrgan", "PunkOrgan\PunkOrgan.csproj", "{3195F625-CA4F-458A-9DDA-84755BACF009}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplex", "Simplex\Simplex.csproj", "{6C913361-5200-421D-A013-AD6EE0D59CEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Z+nthCommon", "Z+nthCommon\Z+nthCommon.csproj", "{EF8B994D-7A39-4D48-9674-D66C14D7C2D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +19,19 @@ Global
 		{3195F625-CA4F-458A-9DDA-84755BACF009}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3195F625-CA4F-458A-9DDA-84755BACF009}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3195F625-CA4F-458A-9DDA-84755BACF009}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C913361-5200-421D-A013-AD6EE0D59CEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C913361-5200-421D-A013-AD6EE0D59CEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C913361-5200-421D-A013-AD6EE0D59CEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C913361-5200-421D-A013-AD6EE0D59CEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF8B994D-7A39-4D48-9674-D66C14D7C2D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF8B994D-7A39-4D48-9674-D66C14D7C2D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF8B994D-7A39-4D48-9674-D66C14D7C2D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF8B994D-7A39-4D48-9674-D66C14D7C2D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {63273CAB-C621-4497-8727-68F136D59503}
 	EndGlobalSection
 EndGlobal

@@ -7,9 +7,10 @@ namespace PunkOrgan
     /// </summary>
     public partial class MainWindow : Window
     {
+        private PunkHammond synth = new PunkHammond();
+
         public MainWindow()
         {
-            var synth = new PunkHammond();
             DataContext = synth;
             Closing += synth.Window_Closed;
             KeyDown += synth.Window_KeyDown;
@@ -17,5 +18,9 @@ namespace PunkOrgan
             InitializeComponent();
         }
 
+        private void slider_Bending_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            slider_Bending.Value = 0;
+        }
     }
 }

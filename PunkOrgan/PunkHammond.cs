@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Input;
+using Z_nthCommon;
 
 namespace PunkOrgan
 {
@@ -13,15 +14,11 @@ namespace PunkOrgan
         public double[] Phase;
     }
 
-    public class PunkHammond : WaveProvider16
+    public class PunkHammond : Zplusnthbase
     {
-        private static readonly double halfnotemultiplier = Math.Pow(2, ((double)1 / (double)12));
-        private static readonly int maxPolyPhony = 10;
         private static readonly int echobuffersize = 20000;
 
         public DrawBar[] Drawbars { get; set; }
-
-        public int CurrentPolyphony { get; set; }
 
         public int Leslie_Rate { get; set; }
         public int Leslie_Freq { get; set; }
@@ -31,21 +28,9 @@ namespace PunkOrgan
 
         private short[] echobuffer;
 
-        private double[] Notes;
-
-        public double Freq { get { return Notes[0]; } set { Notes[0] = value; Notes[1] = value * Math.Pow(halfnotemultiplier, 4); Notes[1] = value * Math.Pow(halfnotemultiplier, 7); } }
-
-        public int OverDrive { get; set; }
-
-        public int DesiredLatency { get; set; }
-
-        private Thread playthread;
-
         public PunkHammond()
         {
             Drawbars = new DrawBar[10];
-            Notes = new double[maxPolyPhony];
-
             //Thanks to: http://www.jessedeanefreeman.com/hammondstuff.html
 
             Drawbars[1] = new DrawBar() { Phase = new double[maxPolyPhony], Volume = 6, FreqMul = 0.5 };
@@ -69,126 +54,9 @@ namespace PunkOrgan
 
             OverDrive = 0;
 
-            DesiredLatency = 100;
-
-            Freq = 0;
-
-            playthread = new Thread(new ThreadStart(SynthThread));
-            playthread.Start();
-        }
-
-        public void Window_Closed(object sender, EventArgs e)
-        {
-            playthread.Abort();
-        }
-
-        private class PressedKey
-        {
-            public Key key;
-            public int channel;
-        }
-
-        private List<PressedKey> pressedKeys = new List<PressedKey>();
-
-        public void Window_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (pressedKeys.Find(x => x.key == e.Key) != null) return;
-
-            int channel = -1;
-            while (pressedKeys.Count >= CurrentPolyphony)
-            {
-                channel = pressedKeys[0].channel;
-                Notes[pressedKeys[0].channel] = 0;
-                pressedKeys.RemoveAt(0);
-            }
-            if (channel == -1)
-            {
-                for (channel = 0; channel < CurrentPolyphony; channel++)
-                {
-                    if (Notes[channel] == 0) { break; }
-                }
-            }
-
-            pressedKeys.Add(new PressedKey() { key = e.Key, channel = channel });
-            Notes[channel] = Key2Freq(e.Key);
-
-            e.Handled = true;
-        }
-
-        public void Window_KeyUp(object sender, KeyEventArgs e)
-        {
-            PressedKey pk = pressedKeys.Find(x => x.key == e.Key);
-            if (pk != null)
-            {
-                Notes[pk.channel] = 0;
-                pressedKeys.Remove(pk);
-            }
-            e.Handled = true;
-        }
-
-        private double Key2Freq(Key key)
-        {
-            double basefreq = 440;
-            switch (key)
-            {
-                case Key.Y: return basefreq / Math.Pow(halfnotemultiplier, 9);
-                case Key.S: return basefreq / Math.Pow(halfnotemultiplier, 8);
-                case Key.X: return basefreq / Math.Pow(halfnotemultiplier, 7);
-                case Key.D: return basefreq / Math.Pow(halfnotemultiplier, 6);
-                case Key.C: return basefreq / Math.Pow(halfnotemultiplier, 5);
-                case Key.V: return basefreq / Math.Pow(halfnotemultiplier, 4);
-                case Key.G: return basefreq / Math.Pow(halfnotemultiplier, 3);
-                case Key.B: return basefreq / Math.Pow(halfnotemultiplier, 2);
-                case Key.H: return basefreq / Math.Pow(halfnotemultiplier, 1);
-                case Key.N: return basefreq;
-                case Key.J: return basefreq * Math.Pow(halfnotemultiplier, 1);
-                case Key.M: return basefreq * Math.Pow(halfnotemultiplier, 2);
-
-                case Key.Q: return basefreq * 2 / Math.Pow(halfnotemultiplier, 9);
-                case Key.D2: return basefreq * 2 / Math.Pow(halfnotemultiplier, 8);
-                case Key.W: return basefreq * 2 / Math.Pow(halfnotemultiplier, 7);
-                case Key.D3: return basefreq * 2 / Math.Pow(halfnotemultiplier, 6);
-                case Key.E: return basefreq * 2 / Math.Pow(halfnotemultiplier, 5);
-                case Key.R: return basefreq * 2 / Math.Pow(halfnotemultiplier, 4);
-                case Key.D5: return basefreq * 2 / Math.Pow(halfnotemultiplier, 3);
-                case Key.T: return basefreq * 2 / Math.Pow(halfnotemultiplier, 2);
-                case Key.D6: return basefreq * 2 / Math.Pow(halfnotemultiplier, 1);
-                case Key.Z: return basefreq * 2;
-                case Key.D7: return basefreq * 2 * Math.Pow(halfnotemultiplier, 1);
-                case Key.U: return basefreq * 2 * Math.Pow(halfnotemultiplier, 2);
-                case Key.I: return basefreq * 2 * Math.Pow(halfnotemultiplier, 3);
-                case Key.D9: return basefreq * 2 * Math.Pow(halfnotemultiplier, 4);
-                case Key.O: return basefreq * 2 * Math.Pow(halfnotemultiplier, 5);
-                case Key.D0: return basefreq * 2 * Math.Pow(halfnotemultiplier, 6);
-                case Key.P: return basefreq * 2 * Math.Pow(halfnotemultiplier, 7);
-
-                default: return 0;
-            }
         }
 
 
-        private void SynthThread()
-        {
-            WaveOutEvent _waveOutEvent = new WaveOutEvent();
-            _waveOutEvent.DeviceNumber = -1;
-            _waveOutEvent.DesiredLatency = DesiredLatency;
-            _waveOutEvent.NumberOfBuffers = 2;
-            _waveOutEvent.Init(this);
-            _waveOutEvent.Play();
-
-            while (true)
-            {
-                if (_waveOutEvent.DesiredLatency != DesiredLatency)
-                {
-                    _waveOutEvent.Stop();
-                    while (_waveOutEvent.PlaybackState != PlaybackState.Stopped) Thread.Sleep(10);
-                    _waveOutEvent.DesiredLatency = DesiredLatency;
-                    _waveOutEvent.Init(this);
-                    _waveOutEvent.Play();
-                }
-                Thread.Sleep(100);
-            }
-        }
 
 
         double Leslie_Phase = 0;
@@ -198,6 +66,8 @@ namespace PunkOrgan
         {
             for (int sample = 0; sample < sampleCount; sample++)
             {
+                double bending = Bending;
+
                 Leslie_Phase += 2 * Math.PI / WaveFormat.SampleRate * Leslie_Freq;
                 if (Leslie_Phase > 2 * Math.PI) Leslie_Phase -= 2 * Math.PI;
                 double leslie = Math.Sin(Leslie_Phase) * Leslie_Rate;
@@ -208,7 +78,7 @@ namespace PunkOrgan
                 {
                     if (Notes[channel] > 0)
                     {
-                        double commonsinpart = 2 * Math.PI / WaveFormat.SampleRate * (Notes[channel] + leslie);
+                        double commonsinpart = 2 * Math.PI / WaveFormat.SampleRate * (Notes[channel] + leslie + bending);
                         for (int drawbar = 1; drawbar < 10; drawbar++)
                         {
                             Drawbars[drawbar].Phase[channel] += commonsinpart * Drawbars[drawbar].FreqMul;
@@ -217,15 +87,18 @@ namespace PunkOrgan
                         }
                     }
                 }
-                //The extra 10 divider (minus overdrive) is for the drawbars. They have 10 position here.
-                currentsamplevalue = currentsamplevalue / 9 * short.MaxValue / (10 - OverDrive) / CurrentPolyphony;
+                //The 90 divider is for the drawbars. There are 9 of them. They have 10 position here.
+                currentsamplevalue = currentsamplevalue / 90 * short.MaxValue / CurrentPolyphony;
+
+                currentsamplevalue = overdrive(currentsamplevalue);
+
 
                 currentsamplevalue = currentsamplevalue + echobuffer[limitechophase(echophase + Echo_Freq)] * Echo_Rate / 100;
 
                 if (currentsamplevalue > short.MaxValue) currentsamplevalue = currentsamplevalue - short.MaxValue;
 
                 buffer[sample + offset] = (short)currentsamplevalue;
-                echobuffer[echophase]= (short)currentsamplevalue;
+                echobuffer[echophase] = (short)currentsamplevalue;
                 echophase++;
                 echophase = limitechophase(echophase);
             }
@@ -235,6 +108,43 @@ namespace PunkOrgan
         private int limitechophase(int phase)
         {
             return phase < echobuffersize ? phase : phase - echobuffersize;
+        }
+
+        private int overDrive;
+        public int OverDrive
+        {
+            get { return overDrive; }
+            set
+            {
+                overDrive = value;
+                if (overDrive == 0)
+                {
+                    th = short.MaxValue;
+                    th2 = short.MaxValue;
+                }
+                else
+                {
+                    th = short.MaxValue / 3;
+                    th2 = th * 2;
+                }
+            }
+        }
+
+        private double th; // threshold for symmetrical soft clipping
+        private double th2;
+        const double maxvalue2 = short.MaxValue * 2;
+        const double maxvalue3 = short.MaxValue * 3;
+
+        private double overdrive(double input)            //by Schetzen Formula
+        {
+            double absinput = Math.Abs(input);
+            if (absinput < th) return 2 * input;
+            int signinput = Math.Sign(input);
+            if (absinput < th2)
+            {
+                return (maxvalue3 - Math.Pow((maxvalue2 - absinput * maxvalue3), 2)) / maxvalue3 * signinput;
+            }
+            return signinput * short.MaxValue;
         }
     }
 }
