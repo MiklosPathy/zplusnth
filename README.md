@@ -12,4 +12,5 @@ You can use keys to play too. Unfortunatelly currently only qwertz works fine. I
 
 Maybe other PunkSynths coming soon, as I have mood and time.
 
-Video about PunkOrgan (v0.01): https://youtu.be/MYSPLxB4lPE
+Video about PunkOrgan (v0.01)
+[![Video about PunkOrgan (v0.01)](http://img.youtube.com/vi/MYSPLxB4lPE/0.jpg)](http://www.youtube.com/watch?v=MYSPLxB4lPE)
