@@ -11,3 +11,5 @@ If the sound is too bad, give more latency. By the way, it should work by defaul
 You can use keys to play too. Unfortunatelly currently only qwertz works fine. I did'nt figured yet out how to do it right with WPF.
 
 Maybe other PunkSynths coming soon, as I have mood and time.
+
+Video about PunkOrgan (v0.01): https://youtu.be/MYSPLxB4lPE
