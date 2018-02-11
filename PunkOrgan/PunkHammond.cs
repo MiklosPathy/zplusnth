@@ -52,7 +52,7 @@ namespace PunkOrgan
 
             CurrentPolyphony = 3;
 
-            OverDrive = 0;
+            OverDrive = 10;
 
         }
 
@@ -90,7 +90,8 @@ namespace PunkOrgan
                 //The 90 divider is for the drawbars. There are 9 of them. They have 10 position here.
                 currentsamplevalue = currentsamplevalue / 90 * short.MaxValue / CurrentPolyphony;
 
-                currentsamplevalue = overdrive(currentsamplevalue);
+                if (overDrive != 10) currentsamplevalue = overdrive(currentsamplevalue * overDrive / 10);
+                //currentsamplevalue = distortion(currentsamplevalue, overDrive / 10, 1);
 
 
                 currentsamplevalue = currentsamplevalue + echobuffer[limitechophase(echophase + Echo_Freq)] * Echo_Rate / 100;
@@ -105,6 +106,7 @@ namespace PunkOrgan
             return sampleCount;
         }
 
+        //Buffer looping
         private int limitechophase(int phase)
         {
             return phase < echobuffersize ? phase : phase - echobuffersize;
@@ -145,6 +147,27 @@ namespace PunkOrgan
                 return (maxvalue3 - Math.Pow((maxvalue2 - absinput * maxvalue3), 2)) / maxvalue3 * signinput;
             }
             return signinput * short.MaxValue;
+        }
+
+        private double distortion(double x, double gain, double mix)
+        {
+            // Distortion based on an exponential function
+            // x - input
+            // gain - amount of distortion, >0->
+            // mix - mix of original and distorted sound, 1=only distorted
+            if (x == 0) return 0;
+            x = x / short.MaxValue;
+
+            double y = x / Math.Abs(x) * (1 - Math.Pow(Math.E, gain * x * x / Math.Abs(x)));
+            return y * short.MaxValue;
+
+
+            //double q = x * gain / Math.Abs(x);
+            //double z = Math.Sign(-q) * (1 - Math.Exp(Math.Sign(-q) * q));
+            //double y = mix * z * Math.Abs(x) / Math.Abs(z) + (1 - mix) * x;
+            //y = y * Math.Abs(x) / Math.Abs(y);
+
+
         }
     }
 }

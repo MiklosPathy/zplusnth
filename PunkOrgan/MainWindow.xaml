@@ -19,7 +19,7 @@
         <Slider x:Name="slider_Bending" Value="{Binding Bending}" HorizontalAlignment="Left" Margin="10,277,0,0" VerticalAlignment="Top" Width="581" Maximum="200" Minimum="-200" SmallChange="1" MouseLeftButtonUp="slider_Bending_MouseLeftButtonUp"/>
         <Slider x:Name="slider_Leslie_Freq" Value="{Binding Leslie_Freq}" HorizontalAlignment="Left" Height="148" Margin="460,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
         <Slider x:Name="slider_Leslie_Rate" Value="{Binding Leslie_Rate}" HorizontalAlignment="Left" Height="148" Margin="485,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="50"/>
-        <Slider x:Name="slider_OverDrive" Value="{Binding OverDrive}" HorizontalAlignment="Left" Height="148" Margin="412,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" SmallChange="1" Maximum="100"/>
+        <Slider x:Name="slider_OverDrive" Value="{Binding OverDrive}" HorizontalAlignment="Left" Height="148" Margin="412,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" SmallChange="1" Maximum="100" Minimum="10"/>
         <Label x:Name="label" Content="Overdrive" HorizontalAlignment="Left" Margin="368,136,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
             <Label.RenderTransform>
                 <TransformGroup>
