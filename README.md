@@ -1,6 +1,5 @@
 # Z+nth
-
-A Z + n 'th totally unnecessary software synthesizer project only for my own (others?) entertainment. For a change, this one written in C#, and runs only on Windows.
+A Z + n 'th totally unnecessary software synthesizer project only for my own (others?) education and entertainment. For a change, this one written in C#, and runs only on Windows.
 
 You will need Naudio for compile. Use Nuget to obtain it. Maybe it will do it for you automatically, i dont know.
 
