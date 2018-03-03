@@ -1,17 +1,49 @@
 ﻿using NAudio.Wave;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows.Input;
+using System.Xml.Serialization;
 using Z_nthCommon;
 
 namespace PunkOrgan
 {
-    public class DrawBar
+    public class PunkOrganPreset
     {
-        public int Volume { get; set; }
+        public PunkOrganPreset()
+        {
+            Polphony = 3;
+            Drawbars = new int[] { 6, 8, 8, 8, 7, 6, 5, 4, 3 };
+            Overdrive = 10;
+            LeslieFreq = 3;
+            LeslieRate = 1;
+            EchoFreq = 10000;
+            EchoRate = 50;
+        }
+        public int Polphony { get; set; }
+        public int[] Drawbars { get; set; }
+        public int Overdrive { get; set; }
+        public int LeslieFreq { get; set; }
+        public int LeslieRate { get; set; }
+        public int EchoFreq { get; set; }
+        public int EchoRate { get; set; }
+    }
+
+    public class DrawBar : INotifyPropertyChanged
+    {
+        private int volume;
+        public int Volume { get { return volume; } set { volume = value; NotifyPropertyChanged(); } }
         public double FreqMul;
         public double[] Phase;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
     public class PunkHammond : Zplusnthbase
@@ -20,43 +52,46 @@ namespace PunkOrgan
 
         public DrawBar[] Drawbars { get; set; }
 
-        public int Leslie_Rate { get; set; }
-        public int Leslie_Freq { get; set; }
+        private int leslie_rate;
+        public int Leslie_Rate { get { return leslie_rate; } set { leslie_rate = value; NotifyPropertyChanged(); } }
+        private int leslie_freq;
+        public int Leslie_Freq { get { return leslie_freq; } set { leslie_freq = value; NotifyPropertyChanged(); } }
 
-        public int Echo_Rate { get; set; }
-        public int Echo_Freq { get; set; }
+        private int echo_rate;
+        public int Echo_Rate { get { return echo_rate; } set { echo_rate = value; NotifyPropertyChanged(); } }
+        private int echo_freq;
+        public int Echo_Freq { get { return echo_freq; } set { echo_freq = value; NotifyPropertyChanged(); } }
 
         private short[] echobuffer;
+
+        private PunkOrganPreset[] presets;
 
         public PunkHammond()
         {
             Drawbars = new DrawBar[10];
             //Thanks to: http://www.jessedeanefreeman.com/hammondstuff.html
 
-            Drawbars[1] = new DrawBar() { Phase = new double[maxPolyPhony], Volume = 6, FreqMul = 0.5 };
-            Drawbars[2] = new DrawBar() { Phase = new double[maxPolyPhony], Volume = 8, FreqMul = Math.Pow(halfnotemultiplier, 7) };
-            Drawbars[3] = new DrawBar() { Phase = new double[maxPolyPhony], Volume = 8, FreqMul = 1 };
-            Drawbars[4] = new DrawBar() { Phase = new double[maxPolyPhony], Volume = 8, FreqMul = 2 };
-            Drawbars[5] = new DrawBar() { Phase = new double[maxPolyPhony], Volume = 7, FreqMul = 2 * Math.Pow(halfnotemultiplier, 7) };
-            Drawbars[6] = new DrawBar() { Phase = new double[maxPolyPhony], Volume = 6, FreqMul = 4 };
-            Drawbars[7] = new DrawBar() { Phase = new double[maxPolyPhony], Volume = 5, FreqMul = 4 * Math.Pow(halfnotemultiplier, 4) };
-            Drawbars[8] = new DrawBar() { Phase = new double[maxPolyPhony], Volume = 4, FreqMul = 4 * Math.Pow(halfnotemultiplier, 7) };
-            Drawbars[9] = new DrawBar() { Phase = new double[maxPolyPhony], Volume = 3, FreqMul = 8 };
+            Drawbars[1] = new DrawBar() { Phase = new double[maxPolyPhony], Volume = 0, FreqMul = 0.5 };
+            Drawbars[2] = new DrawBar() { Phase = new double[maxPolyPhony], Volume = 0, FreqMul = Math.Pow(halfnotemultiplier, 7) };
+            Drawbars[3] = new DrawBar() { Phase = new double[maxPolyPhony], Volume = 0, FreqMul = 1 };
+            Drawbars[4] = new DrawBar() { Phase = new double[maxPolyPhony], Volume = 0, FreqMul = 2 };
+            Drawbars[5] = new DrawBar() { Phase = new double[maxPolyPhony], Volume = 0, FreqMul = 2 * Math.Pow(halfnotemultiplier, 7) };
+            Drawbars[6] = new DrawBar() { Phase = new double[maxPolyPhony], Volume = 0, FreqMul = 4 };
+            Drawbars[7] = new DrawBar() { Phase = new double[maxPolyPhony], Volume = 0, FreqMul = 4 * Math.Pow(halfnotemultiplier, 4) };
+            Drawbars[8] = new DrawBar() { Phase = new double[maxPolyPhony], Volume = 0, FreqMul = 4 * Math.Pow(halfnotemultiplier, 7) };
+            Drawbars[9] = new DrawBar() { Phase = new double[maxPolyPhony], Volume = 0, FreqMul = 8 };
 
-            Leslie_Freq = 3;
-            Leslie_Rate = 1;
+            Leslie_Freq = 0;
+            Leslie_Rate = 0;
 
             echobuffer = new short[echobuffersize];
-            Echo_Freq = 10000;
-            Echo_Rate = 50;
+            Echo_Freq = 0;
+            Echo_Rate = 0;
 
-            CurrentPolyphony = 3;
+            CurrentPolyphony = 1;
 
             OverDrive = 10;
-
         }
-
-
 
 
         double Leslie_Phase = 0;
@@ -129,6 +164,7 @@ namespace PunkOrgan
                     th = short.MaxValue / 3;
                     th2 = th * 2;
                 }
+                NotifyPropertyChanged();
             }
         }
 
@@ -168,6 +204,77 @@ namespace PunkOrgan
             //y = y * Math.Abs(x) / Math.Abs(y);
 
 
+        }
+
+        const string presetfilename = "PunkOrganPresets.xml";
+
+        private void SetPreset(PunkOrganPreset preset)
+        {
+            CurrentPolyphony = preset.Polphony;
+            for (int i = 0; i < 9; i++) { Drawbars[i + 1].Volume = preset.Drawbars[i]; }
+
+            OverDrive = preset.Overdrive;
+
+            Leslie_Freq = preset.LeslieFreq;
+            Leslie_Rate = preset.LeslieRate;
+
+            Echo_Freq = preset.EchoFreq;
+            Echo_Rate = preset.EchoRate;
+
+            NotifyPropertyChanged();
+        }
+
+        protected override void SetPreset(int presetnum)
+        {
+            SetPreset(presets[presetnum]);
+        }
+
+        public void LoadPresets()
+        {
+            presets = new PunkOrganPreset[25];
+            for (int i = 0; i < 25; i++) { presets[i] = new PunkOrganPreset(); }
+
+            if (File.Exists(presetfilename))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(PunkOrganPreset[]));
+                FileStream fs = new FileStream(presetfilename, FileMode.Open);
+                presets = (PunkOrganPreset[])serializer.Deserialize(fs);
+            }
+
+            SetPreset(presets[0]);
+        }
+
+        protected override void GetPreset(int presetnum)
+        {
+            presets[presetnum] = GetPreset();
+        }
+
+        private PunkOrganPreset GetPreset()
+        {
+            PunkOrganPreset preset = new PunkOrganPreset();
+
+            preset.Polphony = CurrentPolyphony;
+            for (int i = 0; i < 9; i++) { preset.Drawbars[i] = Drawbars[i + 1].Volume; }
+
+            preset.Overdrive = OverDrive;
+
+            preset.LeslieFreq = Leslie_Freq;
+            preset.LeslieRate = Leslie_Rate;
+
+            preset.EchoFreq = Echo_Freq;
+            preset.EchoRate = Echo_Rate;
+
+            return preset;
+        }
+
+        protected override void SavePresets()
+        {
+            GetPreset(0);
+
+            XmlSerializer serializer = new XmlSerializer(typeof(PunkOrganPreset[]));
+            TextWriter writer = new StreamWriter(presetfilename);
+            serializer.Serialize(writer, presets);
+            writer.Close();
         }
     }
 }

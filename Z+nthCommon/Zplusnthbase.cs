@@ -1,7 +1,9 @@
 ﻿using NAudio.Wave;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,7 +11,7 @@ using System.Windows.Input;
 
 namespace Z_nthCommon
 {
-    public abstract class Zplusnthbase : WaveProvider16
+    public abstract class Zplusnthbase : WaveProvider16, INotifyPropertyChanged
     {
         protected static readonly double halfnotemultiplier = Math.Pow(2, ((double)1 / (double)12));
         protected static readonly int maxPolyPhony = 10;
@@ -26,15 +28,61 @@ namespace Z_nthCommon
             Bending = 0;
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         public void Window_Closed(object sender, EventArgs e)
         {
             playthread.Abort();
+            SavePresets();
         }
 
-        public int CurrentPolyphony { get; set; }
+        abstract protected void SavePresets();
+
+        private int currentpolyphony;
+        public int CurrentPolyphony { get { return currentpolyphony; } set { currentpolyphony = value; NotifyPropertyChanged(); } }
 
         public void Window_KeyDown(object sender, KeyEventArgs e)
         {
+            switch (e.Key)
+            {
+                case Key.F1:
+                case Key.F2:
+                case Key.F3:
+                case Key.F4:
+                case Key.F5:
+                case Key.F6:
+                case Key.F7:
+                case Key.F8:
+                case Key.F9:
+                case Key.F10:
+                case Key.F11:
+                case Key.F12:
+                case Key.F13:
+                case Key.F14:
+                case Key.F15:
+                case Key.F16:
+                case Key.F17:
+                case Key.F18:
+                case Key.F19:
+                case Key.F20:
+                case Key.F21:
+                case Key.F22:
+                case Key.F23:
+                case Key.F24:
+                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                        GetPreset((int)e.Key - (int)Key.F1 + 1);
+                    else
+                        SetPreset((int)e.Key - (int)Key.F1 + 1);
+                    break;
+                default:
+                    break;
+            }
+
             if (pressedKeys.Find(x => x.key == e.Key) != null) return;
 
             int channel = -1;
@@ -58,6 +106,9 @@ namespace Z_nthCommon
 
             e.Handled = true;
         }
+
+        protected abstract void GetPreset(int presetnum);
+        protected abstract void SetPreset(int presetnum);
 
         public void Window_KeyUp(object sender, KeyEventArgs e)
         {
