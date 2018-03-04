@@ -5,8 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Simplex"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Z+nht - Simplex" Height="350" Width="611.752">
     <Grid>
-        
+        <Slider x:Name="slider_Latency" Value="{Binding DesiredLatency, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="10,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="500" Minimum="1"/>
+        <Slider x:Name="slider_Polyphony" Value="{Binding CurrentPolyphony, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="35,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Minimum="1"/>
+        <Label x:Name="label_Copy" Content="Latency" HorizontalAlignment="Left" Margin="-22,136,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Label x:Name="label_Copy1" Content="Polyphony" HorizontalAlignment="Left" Margin="-10,135,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Slider x:Name="slider_Bending" Value="{Binding Bending}" HorizontalAlignment="Left" Margin="10,277,-74,0" VerticalAlignment="Top" Width="581" Maximum="200" Minimum="-200" SmallChange="1" Thumb.DragCompleted="slider_Bending_DragCompleted"/>
+
     </Grid>
 </Window>

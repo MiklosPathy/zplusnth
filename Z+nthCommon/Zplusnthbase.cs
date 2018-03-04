@@ -24,6 +24,7 @@ namespace Z_nthCommon
             playthread = new Thread(new ThreadStart(SynthThread));
             playthread.Start();
             DesiredLatency = 100;
+            CurrentPolyphony = 1;
 
             Bending = 0;
         }
