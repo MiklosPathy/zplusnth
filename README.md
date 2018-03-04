@@ -7,7 +7,7 @@ Compile, and run PunkOrgan.
 Shred as you wish with the sliders.
 If the sound is too bad, give more latency. By the way, it should work by default, with any computer manufactured after 2010.
 
-You can use keys to play too. Unfortunatelly currently only qwertz works fine. I did'nt figured yet out how to do it right with WPF.
+You can use the keys to play. Unfortunatelly currently only qwertz works fine. I did'nt figured yet out how to do it right with WPF. Use the function keys to load presets. Also, you can save with ctrl-function key.
 
 Maybe other PunkSynths coming soon, as I have mood and time.
 
