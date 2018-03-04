@@ -15,12 +15,28 @@ namespace Z_nthCommon
     {
         protected static readonly double halfnotemultiplier = Math.Pow(2, ((double)1 / (double)12));
         protected static readonly int maxPolyPhony = 10;
-        protected double[] Notes;
+        protected Channel[] Channels;
         private Thread playthread;
+
+        protected enum ChannelState
+        {
+            Inactive,
+            KeyOn,
+            ReKeyOn,
+            Active,
+            KeyOff
+        }
+
+        protected class Channel
+        {
+            public double Freq = 0;
+            public ChannelState State = ChannelState.Inactive;
+        }
 
         public Zplusnthbase()
         {
-            Notes = new double[maxPolyPhony];
+            Channels = new Channel[maxPolyPhony];
+            for (int i = 0; i < maxPolyPhony; i++) { Channels[i] = new Channel(); }
             playthread = new Thread(new ThreadStart(SynthThread));
             playthread.Start();
             DesiredLatency = 100;
@@ -79,7 +95,7 @@ namespace Z_nthCommon
                         GetPreset((int)e.Key - (int)Key.F1 + 1);
                     else
                         SetPreset((int)e.Key - (int)Key.F1 + 1);
-                    break;
+                    return;
                 default:
                     break;
             }
@@ -90,21 +106,54 @@ namespace Z_nthCommon
             while (pressedKeys.Count >= CurrentPolyphony)
             {
                 channel = pressedKeys[0].channel;
-                Notes[pressedKeys[0].channel] = 0;
                 pressedKeys.RemoveAt(0);
             }
             if (channel == -1)
             {
-                for (channel = 0; channel < CurrentPolyphony; channel++)
+                for (int i = 0; i < CurrentPolyphony; i++)
                 {
-                    if (Notes[channel] == 0) { break; }
+                    if (Channels[i].State == ChannelState.Inactive)
+                    {
+                        channel = i;
+                        break;
+                    }
                 }
             }
+            if (channel == -1)
+            {
+                for (int i = 0; i < CurrentPolyphony; i++)
+                {
+                    if (Channels[i].State == ChannelState.KeyOff)
+                    {
+                        channel = i;
+                        break;
+                    }
+                }
+            }
+            if (channel == -1)
+            {
+                for (int i = 0; i < CurrentPolyphony; i++)
+                {
+                    if (Channels[i].State == ChannelState.Active)
+                    {
+                        channel = i;
+                        break;
+                    }
+                }
+            }
+            if (channel == -1)
+            {
+                channel = CurrentPolyphony - 1;
+            }
 
-            pressedKeys.Add(new PressedKey() { key = e.Key, channel = channel });
-            Notes[channel] = Key2Freq(e.Key);
-            //for (int drawbar = 1; drawbar < 10; drawbar++) { Drawbars[drawbar].Phase[channel] = Math.PI; }
-
+            var freq = Key2Freq(e.Key);
+            if (freq != 0)
+            {
+                pressedKeys.Add(new PressedKey() { key = e.Key, channel = channel });
+                Channels[channel].Freq = Key2Freq(e.Key);
+                if (Channels[channel].State == ChannelState.Inactive) Channels[channel].State = ChannelState.KeyOn;
+                else Channels[channel].State = ChannelState.ReKeyOn;
+            }
             e.Handled = true;
         }
 
@@ -116,7 +165,7 @@ namespace Z_nthCommon
             PressedKey pk = pressedKeys.Find(x => x.key == e.Key);
             if (pk != null)
             {
-                Notes[pk.channel] = 0;
+                Channels[pk.channel].State = ChannelState.KeyOff;
                 pressedKeys.Remove(pk);
             }
             e.Handled = true;

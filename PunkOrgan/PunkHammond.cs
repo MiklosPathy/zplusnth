@@ -111,16 +111,42 @@ namespace PunkOrgan
 
                 for (int channel = 0; channel < CurrentPolyphony; channel++)
                 {
-                    if (Notes[channel] > 0)
+                    if (Channels[channel].State == ChannelState.KeyOn)
                     {
-                        double commonsinpart = 2 * Math.PI / WaveFormat.SampleRate * (Notes[channel] + leslie + bending);
                         for (int drawbar = 1; drawbar < 10; drawbar++)
                         {
-                            Drawbars[drawbar].Phase[channel] += commonsinpart * Drawbars[drawbar].FreqMul;
-                            if (Drawbars[drawbar].Phase[channel] > 2 * Math.PI) Drawbars[drawbar].Phase[channel] -= 2 * Math.PI;
-                            currentsamplevalue += (Math.Sin(Drawbars[drawbar].Phase[channel]) * Drawbars[drawbar].Volume);
+                            Drawbars[drawbar].Phase[channel] = 0;
                         }
                     }
+                    if (Channels[channel].State == ChannelState.KeyOn || Channels[channel].State == ChannelState.ReKeyOn) Channels[channel].State = ChannelState.Active;
+                    if (Channels[channel].State == ChannelState.Active || Channels[channel].State == ChannelState.KeyOff)
+                    {
+                        double commonsinpart = 2 * Math.PI / WaveFormat.SampleRate * (Channels[channel].Freq + leslie + bending);
+                        for (int drawbar = 1; drawbar < 10; drawbar++)
+                        {
+                            if (Drawbars[drawbar].Phase[channel] >= 0)
+                            {
+                                Drawbars[drawbar].Phase[channel] += commonsinpart * Drawbars[drawbar].FreqMul;
+                            }
+                            if (Channels[channel].State == ChannelState.KeyOff)
+                                if (Drawbars[drawbar].Phase[channel] >= 2 * Math.PI) Drawbars[drawbar].Phase[channel] = -100;
+                            if (Drawbars[drawbar].Phase[channel] >= 0)
+                            {
+                                if (Drawbars[drawbar].Phase[channel] >= 2 * Math.PI) Drawbars[drawbar].Phase[channel] -= 2 * Math.PI;
+                                currentsamplevalue += (Math.Sin(Drawbars[drawbar].Phase[channel]) * Drawbars[drawbar].Volume);
+                            }
+                        }
+                    }
+                    if (Channels[channel].State == ChannelState.KeyOff)
+                    {
+                        int drawbar;
+                        for (drawbar = 1; drawbar < 10; drawbar++)
+                        {
+                            if (Drawbars[drawbar].Phase[channel] >= 0) break;
+                        }
+                        if (drawbar == 10) Channels[channel].State = ChannelState.Inactive;
+                    }
+
                 }
                 //The 90 divider is for the drawbars. There are 9 of them. They have 10 position here.
                 currentsamplevalue = currentsamplevalue / 90 * short.MaxValue / CurrentPolyphony;

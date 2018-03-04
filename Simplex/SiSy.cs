@@ -21,12 +21,19 @@ namespace Simplex
 
                 for (int channel = 0; channel < CurrentPolyphony; channel++)
                 {
-                    if (Notes[channel] > 0)
+                    if (Channels[channel].State == ChannelState.KeyOn) Phase[channel] = 0;
+                    if (Channels[channel].State == ChannelState.KeyOn || Channels[channel].State == ChannelState.ReKeyOn) Channels[channel].State = ChannelState.Active;
+                    if (Channels[channel].State == ChannelState.Active || Channels[channel].State == ChannelState.KeyOff)
                     {
-                        double commonsinpart = 2 * Math.PI / WaveFormat.SampleRate * (Notes[channel] + Bending);
+                        double commonsinpart = 2 * Math.PI / WaveFormat.SampleRate * (Channels[channel].Freq + Bending);
                         Phase[channel] += commonsinpart;
                         currentsamplevalue += Math.Sin(Phase[channel]);
                     }
+                    if (Channels[channel].State == ChannelState.KeyOff)
+                    {
+                        if (Phase[channel] > 2 * Math.PI) Channels[channel].State = ChannelState.Inactive;
+                    }
+                    if (Phase[channel] > 2 * Math.PI) Phase[channel] -= 2 * Math.PI;
                 }
                 currentsamplevalue = currentsamplevalue * short.MaxValue / CurrentPolyphony;
                 buffer[sample + offset] = (short)currentsamplevalue;
