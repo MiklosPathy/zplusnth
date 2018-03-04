@@ -14,3 +14,6 @@ Maybe other PunkSynths coming soon, as I have mood and time.
 Video about PunkOrgan (v0.01)
 
 [![Video about PunkOrgan (v0.01)](http://img.youtube.com/vi/MYSPLxB4lPE/0.jpg)](http://www.youtube.com/watch?v=MYSPLxB4lPE)
+
+[![Build status](https://ci.appveyor.com/api/projects/status/onh60f7noeo5egt5?svg=true)](https://ci.appveyor.com/project/MiklosPathy/zplusnth)
+
