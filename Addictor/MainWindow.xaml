@@ -1,0 +1,32 @@
+﻿<Window x:Class="Addictor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Addictor"
+        mc:Ignorable="d"
+        Title="Addictor" Height="481.5" Width="1008.594">
+    <Grid>
+        <ListBox ItemsSource="{Binding Harmonics}" HorizontalAlignment="Left" Height="776" Margin="294,-187,0,-138" VerticalAlignment="Top" Width="350" RenderTransformOrigin="0.614,0.511">
+            <ListBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform X="-37.344" Y="-47.723"/>
+                </TransformGroup>
+            </ListBox.RenderTransform>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <local:SetAndRealSlider MinWidth="300"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Slider x:Name="slider_Bending" Value="{Binding Bending}" HorizontalAlignment="Left" Margin="10,408,0,0" VerticalAlignment="Top" Width="581" Maximum="200" Minimum="-200" SmallChange="1" Thumb.DragCompleted="slider_Bending_DragCompleted"/>
+        <Slider x:Name="slider_Latency" Value="{Binding DesiredLatency, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="10,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="500" Minimum="1"/>
+        <Slider x:Name="slider_Polyphony" Value="{Binding CurrentPolyphony, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="35,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Minimum="1"/>
+        <Slider x:Name="slider_Filter" Value="{Binding Filter, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="914,44,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Minimum="0" Maximum="100"/>
+    </Grid>
+</Window>
