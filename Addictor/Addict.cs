@@ -9,21 +9,26 @@ namespace Addictor
 
     public class Addict : Zplusnthbase
     {
-        const int MaxHarmonics = 20;
+        const int MaxHarmonics = 50;
         public SetAndRealSliderViewModel[] Harmonics { get; set; }
-        private double filter;
-        public double Filter
+        private int cutoff;
+        public int Cutoff
         {
-            get { return filter; }
+            get { return cutoff; }
             set
             {
-                filter = value;
+                cutoff = value;
                 for (int i = 0; i < MaxHarmonics; i++)
                 {
-                    if (i >= filter) Harmonics[i].BarReal = 0; else Harmonics[i].BarReal = Harmonics[i].BarSet;
+                    var a = i * 2;
+                    if (a >= cutoff) Harmonics[i].BarReal = 0; else Harmonics[i].BarReal = Harmonics[i].BarSet;
+                    if (a >= cutoff - 2 && a <= cutoff + 2) Harmonics[i].BarReal = resonance;
                 }
             }
         }
+
+        private int resonance;
+        public int Resonance { get { return resonance; } set { resonance = value; Cutoff = cutoff; } }
 
         public Addict()
         {
@@ -33,10 +38,10 @@ namespace Addictor
                 Harmonics[i] = new SetAndRealSliderViewModel();
                 Harmonics[i].FreqMul = i + 1;
                 Harmonics[i].Phase = new double[maxPolyPhony];
-                Harmonics[i].BarSet = 100;
+                Harmonics[i].BarSet = 50;
             }
 
-            Filter = 100;
+            Cutoff = 100;
 
         }
 

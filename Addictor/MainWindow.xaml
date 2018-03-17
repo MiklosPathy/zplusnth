@@ -27,6 +27,7 @@
         <Slider x:Name="slider_Bending" Value="{Binding Bending}" HorizontalAlignment="Left" Margin="10,408,0,0" VerticalAlignment="Top" Width="581" Maximum="200" Minimum="-200" SmallChange="1" Thumb.DragCompleted="slider_Bending_DragCompleted"/>
         <Slider x:Name="slider_Latency" Value="{Binding DesiredLatency, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="10,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="500" Minimum="1"/>
         <Slider x:Name="slider_Polyphony" Value="{Binding CurrentPolyphony, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="35,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Minimum="1"/>
-        <Slider x:Name="slider_Filter" Value="{Binding Filter, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="914,44,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Minimum="0" Maximum="100"/>
+        <Slider x:Name="slider_Cutoff" Value="{Binding Cutoff, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="914,44,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Minimum="0" Maximum="100" SmallChange="1"/>
+        <Slider x:Name="slider_Resonance" Value="{Binding Resonance, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="939,44,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Minimum="0" Maximum="100" SmallChange="1"/>
     </Grid>
 </Window>
