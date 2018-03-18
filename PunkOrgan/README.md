@@ -4,7 +4,7 @@ Punkorgan is a very simple additive synth, based on church/Hammond organ.
 - Leslie effect (freq modulation)
 - Echo effect
 - Volume/overdrive
-- Key play
-- Slider play (just for fun, chord)
+- Keyboard play
+- Slider
 
 The algorithm was designed to implement later in Atmega microcontrollers. Arduino, yes. Later.
