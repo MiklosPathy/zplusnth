@@ -17,7 +17,7 @@ namespace PunkOrgan
         {
             Polphony = 3;
             Drawbars = new int[] { 6, 8, 8, 8, 7, 6, 5, 4, 3 };
-            Overdrive = 10;
+            Overdrive = 1;
             LeslieFreq = 3;
             LeslieRate = 1;
             EchoFreq = 10000;
@@ -57,12 +57,28 @@ namespace PunkOrgan
         private int leslie_freq;
         public int Leslie_Freq { get { return leslie_freq; } set { leslie_freq = value; NotifyPropertyChanged(); } }
 
+        double Leslie_Phase = 0;
+
         private int echo_rate;
         public int Echo_Rate { get { return echo_rate; } set { echo_rate = value; NotifyPropertyChanged(); } }
         private int echo_freq;
         public int Echo_Freq { get { return echo_freq; } set { echo_freq = value; NotifyPropertyChanged(); } }
 
-        private short[] echobuffer;
+        private double[] echobuffer;
+        int echophase = 0;
+
+        private int phaser_mix_rate;
+        public int Phaser_Mix_Rate { get { return phaser_mix_rate; } set { phaser_mix_rate = value; NotifyPropertyChanged(); } }
+        private int phaser_feedback_rate;
+        public int Phaser_Feedback_Rate { get { return phaser_mix_rate; } set { phaser_mix_rate = value; NotifyPropertyChanged(); } }
+        private int phaser_freq;
+        public int Phaser_Freq { get { return phaser_freq; } set { phaser_freq = value; NotifyPropertyChanged(); } }
+
+        private double[] phaserbuffer;
+        int phaserphase = 0;
+        double phaserlfophase = 0;
+
+
 
         private PunkOrganPreset[] presets;
 
@@ -84,9 +100,11 @@ namespace PunkOrgan
             Leslie_Freq = 0;
             Leslie_Rate = 0;
 
-            echobuffer = new short[echobuffersize];
+            echobuffer = new double[echobuffersize];
             Echo_Freq = 0;
             Echo_Rate = 0;
+
+            phaserbuffer = new double[echobuffersize];
 
             CurrentPolyphony = 1;
 
@@ -94,8 +112,7 @@ namespace PunkOrgan
         }
 
 
-        double Leslie_Phase = 0;
-        int echophase = 0;
+
 
         public override int Read(short[] buffer, int offset, int sampleCount)
         {
@@ -149,20 +166,39 @@ namespace PunkOrgan
 
                 }
                 //The 90 divider is for the drawbars. There are 9 of them. They have 10 position here.
-                currentsamplevalue = currentsamplevalue / 90 * short.MaxValue / CurrentPolyphony;
+                currentsamplevalue = currentsamplevalue / 90 / CurrentPolyphony;
 
-                if (overDrive != 10) currentsamplevalue = overdrive(currentsamplevalue * overDrive / 10);
-                //currentsamplevalue = distortion(currentsamplevalue, overDrive / 10, 1);
+                //Over volume + limit = kinda overdrive and distortion
+                #region Volume/Overdrive/Limit
+                currentsamplevalue = currentsamplevalue * overDrive;
+                if (currentsamplevalue > 1) currentsamplevalue = 1;
+                if (currentsamplevalue < -1) currentsamplevalue = -1;
+                #endregion Volume/Overdrive/Limit
 
+                #region Phaser
+                phaserlfophase += 2 * Math.PI / WaveFormat.SampleRate * Phaser_Freq;
+                if (phaserlfophase > 2 * Math.PI) phaserlfophase -= 2 * Math.PI;
+                int phaser = (int)Math.Round((Math.Sin(phaserlfophase) * WaveFormat.SampleRate / 40) + WaveFormat.SampleRate / 20); //0-50 ms delay
+                currentsamplevalue = currentsamplevalue + phaserbuffer[limitechophase(phaserphase - phaser)] * Phaser_Mix_Rate / 100;
+                phaserbuffer[phaserphase] = currentsamplevalue * Phaser_Feedback_Rate;
+                phaserphase++;
+                phaserphase = limitechophase(phaserphase);
+                #endregion Phaser
 
+                #region Echo
                 currentsamplevalue = currentsamplevalue + echobuffer[limitechophase(echophase + Echo_Freq)] * Echo_Rate / 100;
-
-                if (currentsamplevalue > short.MaxValue) currentsamplevalue = currentsamplevalue - short.MaxValue;
-
-                buffer[sample + offset] = (short)currentsamplevalue;
-                echobuffer[echophase] = (short)currentsamplevalue;
+                echobuffer[echophase] = currentsamplevalue;
                 echophase++;
                 echophase = limitechophase(echophase);
+                #endregion Echo
+
+                #region Out limiter
+                currentsamplevalue = currentsamplevalue * short.MaxValue;
+                if (currentsamplevalue > short.MaxValue) currentsamplevalue = short.MaxValue;
+                if (currentsamplevalue < short.MinValue) currentsamplevalue = short.MinValue;
+                #endregion Out limiter
+
+                buffer[sample + offset] = (short)currentsamplevalue;
             }
             return sampleCount;
         }
@@ -170,7 +206,9 @@ namespace PunkOrgan
         //Buffer looping
         private int limitechophase(int phase)
         {
-            return phase < echobuffersize ? phase : phase - echobuffersize;
+            if (phase < 0) return echobuffersize + phase;
+            if (phase >= echobuffersize) return phase - echobuffersize;
+            return phase;
         }
 
         private int overDrive;
