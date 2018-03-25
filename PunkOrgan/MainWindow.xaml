@@ -152,9 +152,10 @@
         <Label x:Name="label1_Copy" Content="Echo" HorizontalAlignment="Left" Margin="648,184,0,0" VerticalAlignment="Top" Height="25"/>
         <Label x:Name="label2_Copy1" Content="Delay" HorizontalAlignment="Left" Margin="634,158,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label2_Copy2" Content="Rate" HorizontalAlignment="Left" Margin="668,158,0,0" VerticalAlignment="Top"/>
-        <Slider x:Name="slider_Phaser_Mix_Rate" Value="{Binding Phaser_Mix_Rate, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="549,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="100"/>
-        <Slider x:Name="slider_Phaser_Freq" Value="{Binding Phaser_Freq, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="574,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
-        <Slider x:Name="slider_Echo_Rate_Copy" Value="{Binding Echo_Rate, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="599,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="100"/>
+        <Slider x:Name="slider_Phaser_Mix_Rate" Value="{Binding Phaser_Mix_Rate, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="530,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="100"/>
+        <Slider x:Name="slider_Phaser_Freq" Value="{Binding Phaser_Freq, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="555,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="100"/>
+        <Slider x:Name="slider_Phaser_Feedback_Rate" Value="{Binding Phaser_Feedback_Rate, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="580,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="100"/>
+        <Slider x:Name="slider_Phaser_Delay" Value="{Binding Phaser_Delay, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="605,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="100" Minimum="1"/>
 
 
     </Grid>

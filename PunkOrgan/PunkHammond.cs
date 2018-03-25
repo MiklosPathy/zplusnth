@@ -70,9 +70,11 @@ namespace PunkOrgan
         private int phaser_mix_rate;
         public int Phaser_Mix_Rate { get { return phaser_mix_rate; } set { phaser_mix_rate = value; NotifyPropertyChanged(); } }
         private int phaser_feedback_rate;
-        public int Phaser_Feedback_Rate { get { return phaser_mix_rate; } set { phaser_mix_rate = value; NotifyPropertyChanged(); } }
+        public int Phaser_Feedback_Rate { get { return phaser_feedback_rate; } set { phaser_feedback_rate = value; NotifyPropertyChanged(); } }
         private int phaser_freq;
         public int Phaser_Freq { get { return phaser_freq; } set { phaser_freq = value; NotifyPropertyChanged(); } }
+        private int phaser_delay;
+        public int Phaser_Delay { get { return phaser_delay; } set { phaser_delay = value; NotifyPropertyChanged(); } }
 
         private double[] phaserbuffer;
         int phaserphase = 0;
@@ -105,6 +107,7 @@ namespace PunkOrgan
             Echo_Rate = 0;
 
             phaserbuffer = new double[echobuffersize];
+            Phaser_Delay = 50;
 
             CurrentPolyphony = 1;
 
@@ -176,11 +179,13 @@ namespace PunkOrgan
                 #endregion Volume/Overdrive/Limit
 
                 #region Phaser
-                phaserlfophase += 2 * Math.PI / WaveFormat.SampleRate * Phaser_Freq;
+                phaserlfophase += 2 * Math.PI / WaveFormat.SampleRate * Phaser_Freq / 100;
                 if (phaserlfophase > 2 * Math.PI) phaserlfophase -= 2 * Math.PI;
-                int phaser = (int)Math.Round((Math.Sin(phaserlfophase) * WaveFormat.SampleRate / 40) + WaveFormat.SampleRate / 20); //0-50 ms delay
-                currentsamplevalue = currentsamplevalue + phaserbuffer[limitechophase(phaserphase - phaser)] * Phaser_Mix_Rate / 100;
-                phaserbuffer[phaserphase] = currentsamplevalue * Phaser_Feedback_Rate;
+                int phaser = (int)Math.Round((Math.Sin(phaserlfophase) * WaveFormat.SampleRate / Phaser_Delay) + WaveFormat.SampleRate / Phaser_Delay / 2); //0-50 ms delay
+                //currentsamplevalue = currentsamplevalue + phaserbuffer[limitechophase(phaserphase - phaser)] * ((double)Phaser_Mix_Rate / 100);
+                //phaserbuffer[phaserphase] = phaserbuffer[phaserphase] + currentsamplevalue * (double)Phaser_Feedback_Rate / 100 / 2;
+                phaserbuffer[phaserphase] = currentsamplevalue;
+                currentsamplevalue = currentsamplevalue + phaserbuffer[limitechophase(phaserphase - phaser)] * ((double)Phaser_Mix_Rate / 100);
                 phaserphase++;
                 phaserphase = limitechophase(phaserphase);
                 #endregion Phaser
@@ -209,6 +214,17 @@ namespace PunkOrgan
             if (phase < 0) return echobuffersize + phase;
             if (phase >= echobuffersize) return phase - echobuffersize;
             return phase;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="signal1"></param>
+        /// <param name="signal2"></param>
+        /// <param name="mixrate">0: signal1 1: signal1+signal2/2</param>
+        /// <returns></returns>
+        private double compressedmix(double signal1, double signal2, double mixrate)
+        {
+            return signal1 * (1 - mixrate / 2) + signal2 * mixrate / 2;
         }
 
         private int overDrive;
