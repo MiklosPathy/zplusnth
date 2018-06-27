@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Z+nthCommon", "Z+nthCommon\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Addictor", "Addictor\Addictor.csproj", "{5C1B07B1-6811-4B7A-831C-7593C41F782D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranceSyzer", "TranceSyzer\TranceSyzer.csproj", "{3102A523-EE75-4442-8E9D-25CA40638252}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{5C1B07B1-6811-4B7A-831C-7593C41F782D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C1B07B1-6811-4B7A-831C-7593C41F782D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C1B07B1-6811-4B7A-831C-7593C41F782D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3102A523-EE75-4442-8E9D-25CA40638252}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3102A523-EE75-4442-8E9D-25CA40638252}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3102A523-EE75-4442-8E9D-25CA40638252}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3102A523-EE75-4442-8E9D-25CA40638252}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
