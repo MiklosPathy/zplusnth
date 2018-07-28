@@ -67,21 +67,6 @@ namespace PunkOrgan
         private double[] echobuffer;
         int echophase = 0;
 
-        private int phaser_mix_rate;
-        public int Phaser_Mix_Rate { get { return phaser_mix_rate; } set { phaser_mix_rate = value; NotifyPropertyChanged(); } }
-        private int phaser_feedback_rate;
-        public int Phaser_Feedback_Rate { get { return phaser_feedback_rate; } set { phaser_feedback_rate = value; NotifyPropertyChanged(); } }
-        private int phaser_freq;
-        public int Phaser_Freq { get { return phaser_freq; } set { phaser_freq = value; NotifyPropertyChanged(); } }
-        private int phaser_delay;
-        public int Phaser_Delay { get { return phaser_delay; } set { phaser_delay = value; NotifyPropertyChanged(); } }
-
-        private double[] phaserbuffer;
-        int phaserphase = 0;
-        double phaserlfophase = 0;
-
-
-
         private PunkOrganPreset[] presets;
 
         public PunkHammond()
@@ -106,16 +91,10 @@ namespace PunkOrgan
             Echo_Freq = 0;
             Echo_Rate = 0;
 
-            phaserbuffer = new double[echobuffersize];
-            Phaser_Delay = 50;
-
             CurrentPolyphony = 1;
 
             OverDrive = 10;
         }
-
-
-
 
         public override int Read(short[] buffer, int offset, int sampleCount)
         {
@@ -177,18 +156,6 @@ namespace PunkOrgan
                 if (currentsamplevalue > 1) currentsamplevalue = 1;
                 if (currentsamplevalue < -1) currentsamplevalue = -1;
                 #endregion Volume/Overdrive/Limit
-
-                #region Phaser
-                phaserlfophase += 2 * Math.PI / WaveFormat.SampleRate * Phaser_Freq / 100;
-                if (phaserlfophase > 2 * Math.PI) phaserlfophase -= 2 * Math.PI;
-                int phaser = (int)Math.Round((Math.Sin(phaserlfophase) * WaveFormat.SampleRate / Phaser_Delay) + WaveFormat.SampleRate / Phaser_Delay / 2); //0-50 ms delay
-                //currentsamplevalue = currentsamplevalue + phaserbuffer[limitechophase(phaserphase - phaser)] * ((double)Phaser_Mix_Rate / 100);
-                //phaserbuffer[phaserphase] = phaserbuffer[phaserphase] + currentsamplevalue * (double)Phaser_Feedback_Rate / 100 / 2;
-                phaserbuffer[phaserphase] = currentsamplevalue;
-                currentsamplevalue = currentsamplevalue + phaserbuffer[limitechophase(phaserphase - phaser)] * ((double)Phaser_Mix_Rate / 100);
-                phaserphase++;
-                phaserphase = limitechophase(phaserphase);
-                #endregion Phaser
 
                 #region Echo
                 currentsamplevalue = currentsamplevalue + echobuffer[limitechophase(echophase + Echo_Freq)] * Echo_Rate / 100;

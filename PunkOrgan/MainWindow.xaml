@@ -5,159 +5,156 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PunkOrgan"
         mc:Ignorable="d"
-        Title="Z+nht - PunkOrgan" Height="350" Width="720">
+        Title="Z+nht - PunkOrgan" Height="342" Width="611">
 
-    <Grid>
-        <Slider x:Name="slider_DrawBar1" Value="{Binding Drawbars[1].Volume,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="141,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
-        <Slider x:Name="slider_DrawBar2" Value="{Binding Drawbars[2].Volume,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="166,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
-        <Slider x:Name="slider_DrawBar3" Value="{Binding Drawbars[3].Volume,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="191,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
-        <Slider x:Name="slider_DrawBar4" Value="{Binding Drawbars[4].Volume,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="216,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
-        <Slider x:Name="slider_DrawBar5" Value="{Binding Drawbars[5].Volume,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="241,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
-        <Slider x:Name="slider_DrawBar6" Value="{Binding Drawbars[6].Volume,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="266,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
-        <Slider x:Name="slider_DrawBar7" Value="{Binding Drawbars[7].Volume,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="291,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
-        <Slider x:Name="slider_DrawBar8" Value="{Binding Drawbars[8].Volume,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="316,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
-        <Slider x:Name="slider_DrawBar9" Value="{Binding Drawbars[9].Volume,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="341,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
-        <Slider x:Name="slider_Bending" Value="{Binding Bending}" HorizontalAlignment="Left" Margin="10,277,0,0" VerticalAlignment="Top" Width="581" Maximum="200" Minimum="-200" SmallChange="1" Thumb.DragCompleted="slider_Bending_DragCompleted"/>
-        <Slider x:Name="slider_Leslie_Freq" Value="{Binding Leslie_Freq,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="460,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
-        <Slider x:Name="slider_Leslie_Rate" Value="{Binding Leslie_Rate,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="485,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="50"/>
-        <Slider x:Name="slider_OverDrive" Value="{Binding OverDrive,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="412,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" SmallChange="1" Maximum="100" Minimum="1"/>
-        <Label x:Name="label" Content="Overdrive" HorizontalAlignment="Left" Margin="368,136,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-90"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Label x:Name="label1" Content="Leslie" HorizontalAlignment="Left" Margin="460,184,0,0" VerticalAlignment="Top" Height="25"/>
-        <Label x:Name="label2" Content="Freq" HorizontalAlignment="Left" Margin="452,158,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label2_Copy" Content="Rate" HorizontalAlignment="Left" Margin="480,158,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label3" Content="Fundamental" HorizontalAlignment="Left" Margin="162,185,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-90
+    <Viewbox>
+        <Grid Margin="0,0,0,-5">
+            <Slider x:Name="slider_DrawBar1" Value="{Binding Drawbars[1].Volume,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="141,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
+            <Slider x:Name="slider_DrawBar2" Value="{Binding Drawbars[2].Volume,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="166,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
+            <Slider x:Name="slider_DrawBar3" Value="{Binding Drawbars[3].Volume,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="191,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
+            <Slider x:Name="slider_DrawBar4" Value="{Binding Drawbars[4].Volume,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="216,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
+            <Slider x:Name="slider_DrawBar5" Value="{Binding Drawbars[5].Volume,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="241,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
+            <Slider x:Name="slider_DrawBar6" Value="{Binding Drawbars[6].Volume,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="266,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
+            <Slider x:Name="slider_DrawBar7" Value="{Binding Drawbars[7].Volume,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="291,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
+            <Slider x:Name="slider_DrawBar8" Value="{Binding Drawbars[8].Volume,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="316,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
+            <Slider x:Name="slider_DrawBar9" Value="{Binding Drawbars[9].Volume,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="341,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
+            <Slider x:Name="slider_Bending" Value="{Binding Bending}" HorizontalAlignment="Left" Margin="10,277,0,0" VerticalAlignment="Top" Width="581" Maximum="200" Minimum="-200" SmallChange="1" Thumb.DragCompleted="slider_Bending_DragCompleted"/>
+            <Slider x:Name="slider_Leslie_Freq" Value="{Binding Leslie_Freq,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="460,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
+            <Slider x:Name="slider_Leslie_Rate" Value="{Binding Leslie_Rate,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="485,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="50"/>
+            <Slider x:Name="slider_OverDrive" Value="{Binding OverDrive,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="412,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" SmallChange="1" Maximum="100" Minimum="1"/>
+            <Label x:Name="label" Content="Overdrive" HorizontalAlignment="Left" Margin="368,136,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
+                <Label.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-90"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Label.RenderTransform>
+            </Label>
+            <Label x:Name="label1" Content="Leslie" HorizontalAlignment="Left" Margin="460,184,0,0" VerticalAlignment="Top" Height="25"/>
+            <Label x:Name="label2" Content="Freq" HorizontalAlignment="Left" Margin="452,158,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="label2_Copy" Content="Rate" HorizontalAlignment="Left" Margin="480,158,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="label3" Content="Fundamental" HorizontalAlignment="Left" Margin="162,185,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                <Label.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-90
                                      "/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Label x:Name="label3_Copy" Content="Sub 3rd harmonic" HorizontalAlignment="Left" Margin="124,197,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-90                                      "/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Label x:Name="label3_Copy1" Content="Sub Fundamental" HorizontalAlignment="Left" Margin="100,198,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-90                                      "/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Label x:Name="label3_Copy2" Content="2nd Harmonic" HorizontalAlignment="Left" Margin="186,185,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-90                                      "/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Label x:Name="label3_Copy3" Content="3rd Harmonic" HorizontalAlignment="Left" Margin="212,185,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-90                                      "/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Label x:Name="label3_Copy4" Content="4th Harmonic" HorizontalAlignment="Left" Margin="236,184,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-90                                      "/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Label x:Name="label3_Copy5" Content="5th Harmonic" HorizontalAlignment="Left" Margin="262,185,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-90                                      "/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Label x:Name="label3_Copy6" Content="6th Harmonic" HorizontalAlignment="Left" Margin="284,185,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-90                                      "/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Label x:Name="label3_Copy7" Content="7th Harmonic" HorizontalAlignment="Left" Margin="312,185,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-90                                      "/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Slider x:Name="slider_Latency" Value="{Binding DesiredLatency,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="10,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="500" Minimum="1"/>
-        <Slider x:Name="slider_Polyphony" Value="{Binding CurrentPolyphony,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="35,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Minimum="1"/>
-        <Label x:Name="label_Copy" Content="Latency" HorizontalAlignment="Left" Margin="-22,136,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-90"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Label x:Name="label_Copy1" Content="Polyphony" HorizontalAlignment="Left" Margin="-10,135,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-90"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Slider x:Name="slider_Echo_Freq" Value="{Binding Echo_Freq,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="648,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="19999" Minimum="1" IsDirectionReversed="True"/>
-        <Slider x:Name="slider_Echo_Rate" Value="{Binding Echo_Rate,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="673,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="100"/>
-        <Label x:Name="label1_Copy" Content="Echo" HorizontalAlignment="Left" Margin="648,184,0,0" VerticalAlignment="Top" Height="25"/>
-        <Label x:Name="label2_Copy1" Content="Delay" HorizontalAlignment="Left" Margin="634,158,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label2_Copy2" Content="Rate" HorizontalAlignment="Left" Margin="668,158,0,0" VerticalAlignment="Top"/>
-        <Slider x:Name="slider_Phaser_Mix_Rate" Value="{Binding Phaser_Mix_Rate, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="530,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="100"/>
-        <Slider x:Name="slider_Phaser_Freq" Value="{Binding Phaser_Freq, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="555,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="100"/>
-        <Slider x:Name="slider_Phaser_Feedback_Rate" Value="{Binding Phaser_Feedback_Rate, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="580,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="100"/>
-        <Slider x:Name="slider_Phaser_Delay" Value="{Binding Phaser_Delay, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="605,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="100" Minimum="1"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Label.RenderTransform>
+            </Label>
+            <Label x:Name="label3_Copy" Content="Sub 3rd harmonic" HorizontalAlignment="Left" Margin="124,197,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                <Label.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-90                                      "/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Label.RenderTransform>
+            </Label>
+            <Label x:Name="label3_Copy1" Content="Sub Fundamental" HorizontalAlignment="Left" Margin="100,198,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                <Label.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-90                                      "/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Label.RenderTransform>
+            </Label>
+            <Label x:Name="label3_Copy2" Content="2nd Harmonic" HorizontalAlignment="Left" Margin="186,185,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                <Label.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-90                                      "/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Label.RenderTransform>
+            </Label>
+            <Label x:Name="label3_Copy3" Content="3rd Harmonic" HorizontalAlignment="Left" Margin="212,185,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                <Label.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-90                                      "/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Label.RenderTransform>
+            </Label>
+            <Label x:Name="label3_Copy4" Content="4th Harmonic" HorizontalAlignment="Left" Margin="236,184,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                <Label.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-90                                      "/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Label.RenderTransform>
+            </Label>
+            <Label x:Name="label3_Copy5" Content="5th Harmonic" HorizontalAlignment="Left" Margin="262,185,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                <Label.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-90                                      "/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Label.RenderTransform>
+            </Label>
+            <Label x:Name="label3_Copy6" Content="6th Harmonic" HorizontalAlignment="Left" Margin="284,185,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                <Label.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-90                                      "/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Label.RenderTransform>
+            </Label>
+            <Label x:Name="label3_Copy7" Content="7th Harmonic" HorizontalAlignment="Left" Margin="312,185,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                <Label.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-90                                      "/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Label.RenderTransform>
+            </Label>
+            <Slider x:Name="slider_Latency" Value="{Binding DesiredLatency,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="10,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="500" Minimum="1"/>
+            <Slider x:Name="slider_Polyphony" Value="{Binding CurrentPolyphony,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="35,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Minimum="1"/>
+            <Label x:Name="label_Copy" Content="Latency" HorizontalAlignment="Left" Margin="-22,136,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
+                <Label.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-90"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Label.RenderTransform>
+            </Label>
+            <Label x:Name="label_Copy1" Content="Polyphony" HorizontalAlignment="Left" Margin="-10,135,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
+                <Label.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-90"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Label.RenderTransform>
+            </Label>
+            <Slider x:Name="slider_Echo_Freq" Value="{Binding Echo_Freq,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="537,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="19999" Minimum="1" IsDirectionReversed="True"/>
+            <Slider x:Name="slider_Echo_Rate" Value="{Binding Echo_Rate,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="562,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="100"/>
+            <Label x:Name="label1_Copy" Content="Echo" HorizontalAlignment="Left" Margin="537,184,0,0" VerticalAlignment="Top" Height="25"/>
+            <Label x:Name="label2_Copy1" Content="Delay" HorizontalAlignment="Left" Margin="523,158,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="label2_Copy2" Content="Rate" HorizontalAlignment="Left" Margin="557,158,0,0" VerticalAlignment="Top"/>
 
 
-    </Grid>
-
+        </Grid>
+    </Viewbox>
 </Window>
