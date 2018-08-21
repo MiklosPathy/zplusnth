@@ -17,7 +17,8 @@ namespace PunkOrgan
         {
             Polphony = 3;
             Drawbars = new int[] { 6, 8, 8, 8, 7, 6, 5, 4, 3 };
-            Overdrive = 1;
+            Overdrive = 10;
+            Amplify = 1;
             LeslieFreq = 3;
             LeslieRate = 1;
             EchoFreq = 10000;
@@ -26,6 +27,7 @@ namespace PunkOrgan
         public int Polphony { get; set; }
         public int[] Drawbars { get; set; }
         public int Overdrive { get; set; }
+        public int Amplify { get; set; }
         public int LeslieFreq { get; set; }
         public int LeslieRate { get; set; }
         public int EchoFreq { get; set; }
@@ -94,6 +96,7 @@ namespace PunkOrgan
             CurrentPolyphony = 1;
 
             OverDrive = 10;
+            Amplify = 1;
         }
 
         public override int Read(short[] buffer, int offset, int sampleCount)
@@ -132,7 +135,7 @@ namespace PunkOrgan
                             if (Drawbars[drawbar].Phase[channel] >= 0)
                             {
                                 if (Drawbars[drawbar].Phase[channel] >= 2 * Math.PI) Drawbars[drawbar].Phase[channel] -= 2 * Math.PI;
-                                currentsamplevalue += (Math.Sin(Drawbars[drawbar].Phase[channel]) * Drawbars[drawbar].Volume);
+                                currentsamplevalue += Simpleoverdrive(Math.Sin(Drawbars[drawbar].Phase[channel]), (double)overDrive/10) * Drawbars[drawbar].Volume;
                             }
                         }
                     }
@@ -152,16 +155,14 @@ namespace PunkOrgan
 
                 //Over volume + limit = kinda overdrive and distortion
                 #region Volume/Overdrive/Limit
-                currentsamplevalue = currentsamplevalue * overDrive;
-                if (currentsamplevalue > 1) currentsamplevalue = 1;
-                if (currentsamplevalue < -1) currentsamplevalue = -1;
+                currentsamplevalue = Simpleoverdrive(currentsamplevalue, amplify);
                 #endregion Volume/Overdrive/Limit
 
                 #region Echo
-                currentsamplevalue = currentsamplevalue + echobuffer[limitechophase(echophase + Echo_Freq)] * Echo_Rate / 100;
+                currentsamplevalue = currentsamplevalue + echobuffer[Limitechophase(echophase + Echo_Freq)] * Echo_Rate / 100;
                 echobuffer[echophase] = currentsamplevalue;
                 echophase++;
-                echophase = limitechophase(echophase);
+                echophase = Limitechophase(echophase);
                 #endregion Echo
 
                 #region Out limiter
@@ -176,7 +177,7 @@ namespace PunkOrgan
         }
 
         //Buffer looping
-        private int limitechophase(int phase)
+        private int Limitechophase(int phase)
         {
             if (phase < 0) return echobuffersize + phase;
             if (phase >= echobuffersize) return phase - echobuffersize;
@@ -189,7 +190,7 @@ namespace PunkOrgan
         /// <param name="signal2"></param>
         /// <param name="mixrate">0: signal1 1: signal1+signal2/2</param>
         /// <returns></returns>
-        private double compressedmix(double signal1, double signal2, double mixrate)
+        private double Compressedmix(double signal1, double signal2, double mixrate)
         {
             return signal1 * (1 - mixrate / 2) + signal2 * mixrate / 2;
         }
@@ -215,12 +216,31 @@ namespace PunkOrgan
             }
         }
 
+        private int amplify;
+        public int Amplify
+        {
+            get { return amplify; }
+            set
+            {
+                amplify = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private double th; // threshold for symmetrical soft clipping
         private double th2;
         const double maxvalue2 = short.MaxValue * 2;
         const double maxvalue3 = short.MaxValue * 3;
 
-        private double overdrive(double input)            //by Schetzen Formula
+        private double Simpleoverdrive(double input, double multiply)
+        {
+            input = input * multiply;
+            if (input > 1) input = 1;
+            if (input < -1) input = -1;
+            return input;
+        }
+
+        private double Sch_overdrive(double input)            //by Schetzen Formula
         {
             double absinput = Math.Abs(input);
             if (absinput < th) return 2 * input;
@@ -232,7 +252,7 @@ namespace PunkOrgan
             return signinput * short.MaxValue;
         }
 
-        private double distortion(double x, double gain, double mix)
+        private double Distortion(double x, double gain, double mix)
         {
             // Distortion based on an exponential function
             // x - input
@@ -261,6 +281,7 @@ namespace PunkOrgan
             for (int i = 0; i < 9; i++) { Drawbars[i + 1].Volume = preset.Drawbars[i]; }
 
             OverDrive = preset.Overdrive;
+            Amplify = preset.Amplify;
 
             Leslie_Freq = preset.LeslieFreq;
             Leslie_Rate = preset.LeslieRate;
@@ -304,6 +325,7 @@ namespace PunkOrgan
             for (int i = 0; i < 9; i++) { preset.Drawbars[i] = Drawbars[i + 1].Volume; }
 
             preset.Overdrive = OverDrive;
+            preset.Amplify = Amplify;
 
             preset.LeslieFreq = Leslie_Freq;
             preset.LeslieRate = Leslie_Rate;
