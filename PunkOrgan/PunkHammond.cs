@@ -16,6 +16,7 @@ namespace PunkOrgan
         public PunkOrganPreset()
         {
             Polphony = 3;
+            Transpose = 0;
             Drawbars = new int[] { 6, 8, 8, 8, 7, 6, 5, 4, 3 };
             Overdrive = 10;
             Amplify = 1;
@@ -25,6 +26,7 @@ namespace PunkOrgan
             EchoRate = 50;
         }
         public int Polphony { get; set; }
+        public int Transpose { get; set; }
         public int[] Drawbars { get; set; }
         public int Overdrive { get; set; }
         public int Amplify { get; set; }
@@ -94,6 +96,7 @@ namespace PunkOrgan
             Echo_Rate = 0;
 
             CurrentPolyphony = 1;
+            Transpose = 0;
 
             OverDrive = 10;
             Amplify = 1;
@@ -278,6 +281,8 @@ namespace PunkOrgan
         private void SetPreset(PunkOrganPreset preset)
         {
             CurrentPolyphony = preset.Polphony;
+            Transpose = preset.Transpose;
+
             for (int i = 0; i < 9; i++) { Drawbars[i + 1].Volume = preset.Drawbars[i]; }
 
             OverDrive = preset.Overdrive;
@@ -322,6 +327,8 @@ namespace PunkOrgan
             PunkOrganPreset preset = new PunkOrganPreset();
 
             preset.Polphony = CurrentPolyphony;
+            preset.Transpose = Transpose;
+
             for (int i = 0; i < 9; i++) { preset.Drawbars[i] = Drawbars[i + 1].Volume; }
 
             preset.Overdrive = OverDrive;

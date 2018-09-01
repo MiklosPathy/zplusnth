@@ -181,9 +181,12 @@ namespace Z_nthCommon
 
         public double Bending { get; set; }
 
+        private int transpose;
+        public int Transpose { get { return transpose; } set { transpose = value; NotifyPropertyChanged(); } }
+
         private double Key2Freq(Key key)
         {
-            double basefreq = 440;
+            double basefreq = 440 * Math.Pow(2, transpose);
             switch (key)
             {
                 case Key.Y: return basefreq / Math.Pow(halfnotemultiplier, 9);
