@@ -95,9 +95,6 @@ namespace PunkOrgan
             Echo_Freq = 0;
             Echo_Rate = 0;
 
-            CurrentPolyphony = 1;
-            Transpose = 0;
-
             OverDrive = 10;
             Amplify = 1;
         }

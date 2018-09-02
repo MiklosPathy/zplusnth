@@ -126,7 +126,7 @@
                     </TransformGroup>
                 </Label.RenderTransform>
             </Label>
-            <Slider x:Name="slider_Latency" Value="{Binding DesiredLatency,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="10,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="500" Minimum="1"/>
+            <Slider x:Name="slider_Latency" Value="{Binding DesiredLatency,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="10,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="200" Minimum="10"/>
             <Slider x:Name="slider_Polyphony" Value="{Binding CurrentPolyphony,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="35,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Minimum="1"/>
             <Label x:Name="label_Copy" Content="Latency" HorizontalAlignment="Left" Margin="-22,136,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
                 <Label.RenderTransform>

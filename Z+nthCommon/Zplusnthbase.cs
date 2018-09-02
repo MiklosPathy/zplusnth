@@ -39,8 +39,9 @@ namespace Z_nthCommon
             for (int i = 0; i < maxPolyPhony; i++) { Channels[i] = new Channel(); }
             playthread = new Thread(new ThreadStart(SynthThread));
             playthread.Start();
-            DesiredLatency = 100;
+            DesiredLatency = 50;
             CurrentPolyphony = 1;
+            Transpose = 0;
 
             Bending = 0;
         }
@@ -245,7 +246,7 @@ namespace Z_nthCommon
                     _waveOutEvent.Init(this);
                     _waveOutEvent.Play();
                 }
-                Thread.Sleep(100);
+                Thread.Sleep(10);
             }
         }
     }
