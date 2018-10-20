@@ -1,13 +1,17 @@
-﻿using NAudio.Wave;
+﻿using NAudio.Midi;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Input;
+using Timer = System.Timers.Timer;
 
 namespace Z_nthCommon
 {
@@ -39,11 +43,18 @@ namespace Z_nthCommon
             for (int i = 0; i < maxPolyPhony; i++) { Channels[i] = new Channel(); }
             playthread = new Thread(new ThreadStart(SynthThread));
             playthread.Start();
+            midithread = new Thread(new ThreadStart(MidiThread));
             DesiredLatency = 50;
             CurrentPolyphony = 1;
             Transpose = 0;
 
             Bending = 0;
+
+            MidiNumberToFreq = new Dictionary<int, double>();
+            for (int i = 1; i < 120; i++)
+            {
+                MidiNumberToFreq[i] = Math.Pow(2, ((double)i - 69) / 12) * 440;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -56,6 +67,7 @@ namespace Z_nthCommon
         public void Window_Closed(object sender, EventArgs e)
         {
             playthread.Abort();
+            midithread.Abort();
             SavePresets();
         }
 
@@ -97,12 +109,33 @@ namespace Z_nthCommon
                     else
                         SetPreset((int)e.Key - (int)Key.F1 + 1);
                     return;
+                case Key.Insert:
+                    StartDemo();
+                    break;
+                case Key.Delete:
+                    StopDemo();
+                    break;
                 default:
                     break;
             }
 
             if (pressedKeys.Find(x => x.key == e.Key) != null) return;
 
+            int channel = GetChannel();
+
+            var freq = Key2Freq(e.Key);
+            if (freq != 0)
+            {
+                pressedKeys.Add(new PressedKey() { key = e.Key, channel = channel, midiNoteNumber = 0 });
+                Channels[channel].Freq = freq;
+                if (Channels[channel].State == ChannelState.Inactive) Channels[channel].State = ChannelState.KeyOn;
+                else Channels[channel].State = ChannelState.ReKeyOn;
+            }
+            e.Handled = true;
+        }
+
+        private int GetChannel()
+        {
             int channel = -1;
             while (pressedKeys.Count >= CurrentPolyphony)
             {
@@ -146,16 +179,95 @@ namespace Z_nthCommon
             {
                 channel = CurrentPolyphony - 1;
             }
+            return channel;
+        }
 
-            var freq = Key2Freq(e.Key);
-            if (freq != 0)
+        MidiFile mifi;
+
+        private void StopDemo()
+        {
+            midithread.Suspend();
+        }
+
+        private void StartDemo()
+        {
+            if (midithread.ThreadState == ThreadState.Running) return;
+
+            if (!File.Exists("demo.mid")) return;
+            mifi = new MidiFile("demo.mid", false);
+
+            MidiEventsByTick = mifi.Events.SelectMany(x => x).OrderBy(x => x.AbsoluteTime).
+                 GroupBy(x => x.AbsoluteTime, x => x).ToDictionary(x => x.Key, x => x.ToArray());
+
+            MaxMidiTicks = MidiEventsByTick.Keys.Max();
+
+            var timeSignature = mifi.Events[0].OfType<TimeSignatureEvent>().FirstOrDefault();
+
+            int beatsPerBar = timeSignature == null ? 4 : timeSignature.Numerator;
+            int ticksPerBar = timeSignature == null ? mifi.DeltaTicksPerQuarterNote * 4 : (timeSignature.Numerator * mifi.DeltaTicksPerQuarterNote * 4) / (1 << timeSignature.Denominator);
+            ticksPerBeat = ticksPerBar / beatsPerBar;
+
+            midisleeptime = 1;
+            MidiTicks = 0;
+            if (midithread.ThreadState == ThreadState.Suspended) midithread.Resume();
+            else midithread.Start();
+        }
+
+        private Thread midithread;
+        private Dictionary<long, MidiEvent[]> MidiEventsByTick;
+        private int MidiTicks;
+        private long MaxMidiTicks;
+        private int ticksPerBeat;
+        int midisleeptime;
+
+        private void MidiThread()
+        {
+            while (MidiTicks <= MaxMidiTicks)
             {
-                pressedKeys.Add(new PressedKey() { key = e.Key, channel = channel });
-                Channels[channel].Freq = Key2Freq(e.Key);
-                if (Channels[channel].State == ChannelState.Inactive) Channels[channel].State = ChannelState.KeyOn;
-                else Channels[channel].State = ChannelState.ReKeyOn;
+                Thread.Sleep(midisleeptime);
+
+                MidiEvent[] me = null;
+                MidiEventsByTick.TryGetValue(MidiTicks, out me);
+                MidiTicks++;
+                if (me == null) continue;
+
+                foreach (MidiEvent item in me)
+                {
+                    if (item is TempoEvent)
+                    {
+                        TempoEvent te = (TempoEvent)item;
+                        int interv = te.MicrosecondsPerQuarterNote / ticksPerBeat / 1000;
+                        midisleeptime = interv == 0 ? 1 : interv;
+                    }
+                    if (item is NoteOnEvent)
+                    {
+                        NoteOnEvent ne = (NoteOnEvent)item;
+                        PressedKey pk = pressedKeys.Find(x => x.midiNoteNumber == ne.NoteNumber);
+
+                        if (pk != null)
+                        {
+                            if (ne.Velocity == 0) //Keyoff
+                            {
+                                Channels[pk.channel].State = ChannelState.KeyOff;
+                                pressedKeys.Remove(pk);
+                            }
+                            continue;
+                        }
+
+                        int channel = GetChannel();
+
+                        var freq = MidiNumberToFreq[ne.NoteNumber];
+                        if (freq != 0)
+                        {
+                            pressedKeys.Add(new PressedKey() { key = Key.None, channel = channel, midiNoteNumber = ne.NoteNumber });
+                            Channels[channel].Freq = freq;
+                            if (Channels[channel].State == ChannelState.Inactive) Channels[channel].State = ChannelState.KeyOn;
+                            else Channels[channel].State = ChannelState.ReKeyOn;
+                        }
+                    }
+                }
             }
-            e.Handled = true;
+            return;
         }
 
         protected abstract void GetPreset(int presetnum);
@@ -176,6 +288,7 @@ namespace Z_nthCommon
         {
             public Key key;
             public int channel;
+            public int midiNoteNumber;
         }
 
         private List<PressedKey> pressedKeys = new List<PressedKey>();
@@ -224,6 +337,8 @@ namespace Z_nthCommon
                 default: return 0;
             }
         }
+
+        Dictionary<int, double> MidiNumberToFreq;
 
         public int DesiredLatency { get; set; }
 
