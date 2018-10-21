@@ -3,10 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PunkOrgan"
+        xmlns:Z_nthCommon ="clr-namespace:Z_nthCommon;assembly=Z+nthCommon"
         mc:Ignorable="d"
         Title="Z+nht - PunkOrgan" Height="342" Width="611">
-
+    <Window.Resources>
+        <Z_nthCommon:ChannelToStringConverter x:Key="ChannelToStringConverter" />
+    </Window.Resources>
+    
     <Viewbox>
         <Grid Margin="0,0,0,-5">
             <Slider x:Name="slider_DrawBar1" Value="{Binding Drawbars[1].Volume,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="115,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical"/>
@@ -175,6 +178,14 @@
                     </TransformGroup>
                 </Label.RenderTransform>
             </Label>
+            <ListBox 
+                IsEnabled="False"
+                ItemsSource="{Binding Path=Channels}" 
+                DisplayMemberPath="Freq4Disp" 
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                HorizontalAlignment="Left" Height="238" Margin="340,15,0,0" VerticalAlignment="Top" Width="42" Opacity="0.2">
+            </ListBox>
 
 
         </Grid>

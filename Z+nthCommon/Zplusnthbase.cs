@@ -20,10 +20,10 @@ namespace Z_nthCommon
     {
         protected static readonly double halfnotemultiplier = Math.Pow(2, ((double)1 / (double)12));
         protected static readonly int maxPolyPhony = 10;
-        protected Channel[] Channels;
+        public Channel[] Channels { get; set; }
         private Thread playthread;
 
-        protected enum ChannelState
+        public enum ChannelState
         {
             Inactive,
             KeyOn,
@@ -32,10 +32,21 @@ namespace Z_nthCommon
             KeyOff
         }
 
-        protected class Channel
+        public class Channel : INotifyPropertyChanged
         {
-            public double Freq = 0;
-            public ChannelState State = ChannelState.Inactive;
+            private double _Freq = 0;
+            public double Freq { get { return _Freq; } set { _Freq = value; NotifyPropertyChanged("Freq4Disp"); } }
+            private ChannelState _State = ChannelState.Inactive;
+            public ChannelState State { get { return _State; } set { _State = value; NotifyPropertyChanged("Freq4Disp"); } }
+
+            public string Freq4Disp { get { return State == ChannelState.Inactive ? "" : Math.Round(Freq).ToString(); } }
+
+            protected void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
         }
 
         public class BaseState
