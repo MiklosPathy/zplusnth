@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
+using System.Xml.Serialization;
 using Timer = System.Timers.Timer;
 
 namespace Z_nthCommon
@@ -35,6 +36,11 @@ namespace Z_nthCommon
         {
             public double Freq = 0;
             public ChannelState State = ChannelState.Inactive;
+        }
+
+        public class BaseState
+        {
+            public int DesiredLatency { get; set; } = 50;
         }
 
         public Zplusnthbase()
@@ -67,8 +73,32 @@ namespace Z_nthCommon
         public void Window_Closed(object sender, EventArgs e)
         {
             playthread.Abort();
-            midithread.Abort();
+            if (midithread.ThreadState == ThreadState.Suspended) midithread.Resume();
+            if (midithread.ThreadState == ThreadState.Running) midithread.Abort();
             SavePresets();
+            SaveState();
+        }
+
+        private void SaveState()
+        {
+            BaseState state = new BaseState() { DesiredLatency = DesiredLatency };
+
+            XmlSerializer serializer = new XmlSerializer(typeof(BaseState));
+            TextWriter writer = new StreamWriter(typeof(BaseState).Name + ".xml");
+            serializer.Serialize(writer, state);
+            writer.Close();
+        }
+
+        public void LoadState()
+        {
+            if (File.Exists(typeof(BaseState).Name + ".xml"))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(BaseState));
+                FileStream fs = new FileStream(typeof(BaseState).Name + ".xml", FileMode.Open);
+                BaseState state;
+                state = (BaseState)serializer.Deserialize(fs);
+                DesiredLatency = state.DesiredLatency;
+            }
         }
 
         abstract protected void SavePresets();
@@ -186,12 +216,18 @@ namespace Z_nthCommon
 
         private void StopDemo()
         {
+            if (midithread.ThreadState == ThreadState.Stopped) return;
             midithread.Suspend();
+            foreach (var item in Channels)
+            {
+                item.State = ChannelState.Inactive;
+            }
         }
 
         private void StartDemo()
         {
             if (midithread.ThreadState == ThreadState.Running) return;
+            if (midithread.ThreadState == ThreadState.Stopped) midithread = new Thread(new ThreadStart(MidiThread));
 
             if (!File.Exists("demo.mid")) return;
             mifi = new MidiFile("demo.mid", false);
@@ -233,6 +269,7 @@ namespace Z_nthCommon
 
                 foreach (MidiEvent item in me)
                 {
+                    if (item.Channel == 10) continue;
                     if (item is TempoEvent)
                     {
                         TempoEvent te = (TempoEvent)item;
@@ -246,7 +283,7 @@ namespace Z_nthCommon
 
                         if (pk != null)
                         {
-                            if (ne.Velocity == 0) //Keyoff
+                            if (ne.Velocity == 0 || ne.CommandCode == MidiCommandCode.NoteOff) //Keyoff
                             {
                                 Channels[pk.channel].State = ChannelState.KeyOff;
                                 pressedKeys.Remove(pk);
@@ -303,18 +340,25 @@ namespace Z_nthCommon
             double basefreq = 440 * Math.Pow(2, transpose);
             switch (key)
             {
-                case Key.Y: return basefreq / Math.Pow(halfnotemultiplier, 9);
-                case Key.S: return basefreq / Math.Pow(halfnotemultiplier, 8);
-                case Key.X: return basefreq / Math.Pow(halfnotemultiplier, 7);
-                case Key.D: return basefreq / Math.Pow(halfnotemultiplier, 6);
-                case Key.C: return basefreq / Math.Pow(halfnotemultiplier, 5);
-                case Key.V: return basefreq / Math.Pow(halfnotemultiplier, 4);
-                case Key.G: return basefreq / Math.Pow(halfnotemultiplier, 3);
-                case Key.B: return basefreq / Math.Pow(halfnotemultiplier, 2);
-                case Key.H: return basefreq / Math.Pow(halfnotemultiplier, 1);
-                case Key.N: return basefreq;
-                case Key.J: return basefreq * Math.Pow(halfnotemultiplier, 1);
-                case Key.M: return basefreq * Math.Pow(halfnotemultiplier, 2);
+                case Key.Oem102: return basefreq / Math.Pow(halfnotemultiplier, 16);
+                case Key.A: return basefreq / Math.Pow(halfnotemultiplier, 15);
+                case Key.Y: return basefreq / Math.Pow(halfnotemultiplier, 14);
+                case Key.S: return basefreq / Math.Pow(halfnotemultiplier, 13);
+                case Key.X: return basefreq / Math.Pow(halfnotemultiplier, 12);
+                case Key.D: return basefreq / Math.Pow(halfnotemultiplier, 11);
+                case Key.C: return basefreq / Math.Pow(halfnotemultiplier, 10);
+                case Key.V: return basefreq / Math.Pow(halfnotemultiplier, 9);
+                case Key.G: return basefreq / Math.Pow(halfnotemultiplier, 8);
+                case Key.B: return basefreq / Math.Pow(halfnotemultiplier, 7);
+                case Key.H: return basefreq / Math.Pow(halfnotemultiplier, 6);
+                case Key.N: return basefreq / Math.Pow(halfnotemultiplier, 5);
+                case Key.M: return basefreq / Math.Pow(halfnotemultiplier, 4);
+                case Key.K: return basefreq / Math.Pow(halfnotemultiplier, 3);
+                case Key.OemComma: return basefreq / Math.Pow(halfnotemultiplier, 2);
+                case Key.L: return basefreq / Math.Pow(halfnotemultiplier, 1);
+                case Key.OemPeriod: return basefreq;
+                case Key.Oem1: return basefreq * Math.Pow(halfnotemultiplier, 1);
+                case Key.OemMinus: return basefreq * Math.Pow(halfnotemultiplier, 2);
 
                 case Key.Q: return basefreq * 2 / Math.Pow(halfnotemultiplier, 9);
                 case Key.D2: return basefreq * 2 / Math.Pow(halfnotemultiplier, 8);
@@ -331,8 +375,11 @@ namespace Z_nthCommon
                 case Key.I: return basefreq * 2 * Math.Pow(halfnotemultiplier, 3);
                 case Key.D9: return basefreq * 2 * Math.Pow(halfnotemultiplier, 4);
                 case Key.O: return basefreq * 2 * Math.Pow(halfnotemultiplier, 5);
-                case Key.D0: return basefreq * 2 * Math.Pow(halfnotemultiplier, 6);
+                case Key.Oem3: return basefreq * 2 * Math.Pow(halfnotemultiplier, 6);
                 case Key.P: return basefreq * 2 * Math.Pow(halfnotemultiplier, 7);
+                case Key.Oem4: return basefreq * 2 * Math.Pow(halfnotemultiplier, 8);
+                case Key.OemPlus: return basefreq * 2 * Math.Pow(halfnotemultiplier, 9);
+                case Key.Oem6: return basefreq * 2 * Math.Pow(halfnotemultiplier, 10);
 
                 default: return 0;
             }
@@ -361,7 +408,7 @@ namespace Z_nthCommon
                     _waveOutEvent.Init(this);
                     _waveOutEvent.Play();
                 }
-                Thread.Sleep(10);
+                Thread.Sleep(1);
             }
         }
     }

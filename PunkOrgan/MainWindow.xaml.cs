@@ -11,6 +11,7 @@ namespace PunkOrgan
 
         public MainWindow()
         {
+            synth.LoadState();
             synth.LoadPresets();
             DataContext = synth;
             Closing += synth.Window_Closed;
