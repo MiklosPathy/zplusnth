@@ -59,8 +59,10 @@ namespace Z_nthCommon
             Channels = new Channel[maxPolyPhony];
             for (int i = 0; i < maxPolyPhony; i++) { Channels[i] = new Channel(); }
             playthread = new Thread(new ThreadStart(SynthThread));
+            playthread.IsBackground = true;
             playthread.Start();
             midithread = new Thread(new ThreadStart(MidiThread));
+            midithread.IsBackground = true;
             DesiredLatency = 50;
             CurrentPolyphony = 1;
             Transpose = 0;
