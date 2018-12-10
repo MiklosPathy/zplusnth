@@ -400,7 +400,9 @@ namespace Z_nthCommon
 
         Dictionary<int, double> MidiNumberToFreq;
 
-        public int DesiredLatency { get; set; }
+        private int _DesiredLatency;
+        public int DesiredLatency { get { return _DesiredLatency; } set { _DesiredLatency = value; NotifyPropertyChanged(); } }
+
 
         private void SynthThread()
         {

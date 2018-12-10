@@ -6,6 +6,10 @@
         xmlns:local="clr-namespace:Simplex"
         mc:Ignorable="d"
         Title="Z+nht - Simplex" Height="350" Width="611.752">
+    <Window.Resources>
+        <local:EnumMatchToBooleanConverter x:Key="enumConverter" />
+    </Window.Resources>
+
     <Grid>
         <Slider x:Name="slider_Latency" Value="{Binding DesiredLatency, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="10,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="500" Minimum="1"/>
         <Slider x:Name="slider_Polyphony" Value="{Binding CurrentPolyphony, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="35,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Minimum="1"/>
@@ -30,6 +34,48 @@
             </Label.RenderTransform>
         </Label>
         <Slider x:Name="slider_Bending" Value="{Binding Bending}" HorizontalAlignment="Left" Margin="10,277,-74,0" VerticalAlignment="Top" Width="581" Maximum="200" Minimum="-200" SmallChange="1" Thumb.DragCompleted="slider_Bending_DragCompleted"/>
+        <Slider x:Name="slider_Transpose" Value="{Binding Transpose, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="60,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Minimum="-2" Maximum="2" SmallChange="1"/>
+        <Label Content="{Binding DesiredLatency, Mode=TwoWay}" HorizontalAlignment="Left" Height="25" Margin="10,230,0,0" VerticalAlignment="Top" Width="88"/>
+        <Label x:Name="label_Transpose" Content="Transpose" HorizontalAlignment="Left" Margin="13,136,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <ListBox 
+            IsEnabled="False"
+            ItemsSource="{Binding Channels}" 
+            DisplayMemberPath="Freq4Disp" 
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+            HorizontalAlignment="Left" Height="238" Margin="340,15,0,0" VerticalAlignment="Top" Width="42" Opacity="0.2"/>
+        <RadioButton Content="Sine" HorizontalAlignment="Left" Height="18" Margin="145,78,0,0" VerticalAlignment="Top" Width="91" 
+                     GroupName="Waveform"
+                     IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, 
+                                 Converter={StaticResource enumConverter},
+                                 ConverterParameter=Sine}"  
+                     />
+
+        <RadioButton Content="Square" HorizontalAlignment="Left" Height="18" Margin="145,96,0,0" VerticalAlignment="Top" Width="91" 
+                     GroupName="Waveform"
+                     IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, 
+                                 Converter={StaticResource enumConverter},
+                                 ConverterParameter=Square}"  
+                     />
+        <RadioButton Content="Saw" HorizontalAlignment="Left" Height="18" Margin="145,114,0,0" VerticalAlignment="Top" Width="91" 
+                     GroupName="Waveform"
+                     IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, 
+                                 Converter={StaticResource enumConverter},
+                                 ConverterParameter=Saw}" 
+                     />
+        <RadioButton Content="Triangle" HorizontalAlignment="Left" Height="18" Margin="145,132,0,0" VerticalAlignment="Top" Width="91" 
+                     GroupName="Waveform"
+                     IsChecked="{Binding CurrentOption, ConverterParameter=Triangle, Converter={StaticResource enumConverter}, Mode=TwoWay}" 
+                     />
 
     </Grid>
 </Window>

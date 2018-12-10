@@ -9,9 +9,14 @@ using Z_nthCommon;
 
 namespace Simplex
 {
+    public enum Waveform { Sine, Saw, Square, Triangle };
+
+
     public class SiSy : Zplusnthbase
     {
         private double[] Phase = new double[maxPolyPhony];
+
+        public Waveform CurrentOption { get; set; }
 
         public override int Read(short[] buffer, int offset, int sampleCount)
         {
@@ -27,13 +32,30 @@ namespace Simplex
                     {
                         double commonsinpart = 2 * Math.PI / WaveFormat.SampleRate * (Channels[channel].Freq + Bending);
                         Phase[channel] += commonsinpart;
-                        currentsamplevalue += Math.Sin(Phase[channel]);
+                        double correctedphase = Z_nthCommon.Phase.Correction(Phase[channel]);
+                        switch (CurrentOption)
+                        {
+                            case Waveform.Sine:
+                                currentsamplevalue += Math.Sin(correctedphase);
+                                break;
+                            case Waveform.Saw:
+                                currentsamplevalue += Z_nthCommon.Phase.Saw(correctedphase);
+                                break;
+                            case Waveform.Square:
+                                currentsamplevalue += Z_nthCommon.Phase.Square(correctedphase);
+                                break;
+                            case Waveform.Triangle:
+                                currentsamplevalue += Z_nthCommon.Phase.Triangle(correctedphase);
+                                break;
+                            default:
+                                break;
+                        }
                     }
                     if (Channels[channel].State == ChannelState.KeyOff)
                     {
                         if (Phase[channel] > 2 * Math.PI) Channels[channel].State = ChannelState.Inactive;
                     }
-                    if (Phase[channel] > 2 * Math.PI) Phase[channel] -= 2 * Math.PI;
+                    Phase[channel] = Z_nthCommon.Phase.Correction(Phase[channel]);
                 }
                 currentsamplevalue = currentsamplevalue * short.MaxValue / CurrentPolyphony;
                 buffer[sample + offset] = (short)currentsamplevalue;

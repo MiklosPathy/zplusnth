@@ -52,6 +52,24 @@
                 </TransformGroup>
             </Label.RenderTransform>
         </Label>
+        <Slider x:Name="slider_Transpose" Value="{Binding Transpose, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="60,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Minimum="-2" Maximum="2" SmallChange="1"/>
+        <Label x:Name="label_Transpose" Content="Transpose" HorizontalAlignment="Left" Margin="13,136,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <ListBox 
+            IsEnabled="False"
+            ItemsSource="{Binding Channels}" 
+            DisplayMemberPath="Freq4Disp" 
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+            HorizontalAlignment="Left" Height="238" Margin="340,15,0,0" VerticalAlignment="Top" Width="42" Opacity="0.2"/>
 
     </Grid>
 </Window>

@@ -50,32 +50,9 @@ namespace TranceSyzer
 
             for (int i = start; i < count; i++)
             {
-                result += Saw(phase + i * spread, 0);
+                result += Z_nthCommon.Phase.Saw(phase + i * spread);
             }
             result = result / count;
-
-            return result;
-        }
-
-        private double Saw(double phase, double steepness)
-        {
-            //0 Pi: 0
-            //1 Pi: 0
-            //2 Pi: 0
-            //max 1
-            //min -1
-            phase = (phase / Math.PI);
-            if (phase < 0) phase = (phase % 2) + 2;
-            if (phase > 2) phase = phase % 2;
-            phase = phase - 1;
-
-            double result = 0;
-
-            if (steepness == 0)
-            {
-                return phase;
-            }
-
 
             return result;
         }
