@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Simplex"
+        xmlns:z_nthcommon="clr-namespace:Z_nthCommon;assembly=Z+nthCommon"
         mc:Ignorable="d"
         Title="Z+nht - Simplex" Height="350" Width="611.752">
     <Window.Resources>
-        <local:EnumMatchToBooleanConverter x:Key="enumConverter" />
+        <z_nthcommon:EnumMatchToBooleanConverter x:Key="enumConverter" />
     </Window.Resources>
 
     <Grid>
@@ -53,26 +54,26 @@
             ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
             ScrollViewer.VerticalScrollBarVisibility="Disabled"
             HorizontalAlignment="Left" Height="238" Margin="340,15,0,0" VerticalAlignment="Top" Width="42" Opacity="0.2"/>
-        <RadioButton Content="Sine" HorizontalAlignment="Left" Height="18" Margin="145,78,0,0" VerticalAlignment="Top" Width="91" 
+        <RadioButton Content="Sine" HorizontalAlignment="Left" Height="18" Margin="145,37,0,0" VerticalAlignment="Top" Width="91" 
                      GroupName="Waveform"
                      IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, 
                                  Converter={StaticResource enumConverter},
                                  ConverterParameter=Sine}"  
                      />
 
-        <RadioButton Content="Square" HorizontalAlignment="Left" Height="18" Margin="145,96,0,0" VerticalAlignment="Top" Width="91" 
+        <RadioButton Content="Square" HorizontalAlignment="Left" Height="18" Margin="145,91,0,0" VerticalAlignment="Top" Width="91" 
                      GroupName="Waveform"
                      IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, 
                                  Converter={StaticResource enumConverter},
                                  ConverterParameter=Square}"  
                      />
-        <RadioButton Content="Saw" HorizontalAlignment="Left" Height="18" Margin="145,114,0,0" VerticalAlignment="Top" Width="91" 
+        <RadioButton Content="Saw" HorizontalAlignment="Left" Height="18" Margin="145,73,0,0" VerticalAlignment="Top" Width="91" 
                      GroupName="Waveform"
                      IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, 
                                  Converter={StaticResource enumConverter},
                                  ConverterParameter=Saw}" 
                      />
-        <RadioButton Content="Triangle" HorizontalAlignment="Left" Height="18" Margin="145,132,0,0" VerticalAlignment="Top" Width="91" 
+        <RadioButton Content="Triangle" HorizontalAlignment="Left" Height="18" Margin="145,55,0,0" VerticalAlignment="Top" Width="91" 
                      GroupName="Waveform"
                      IsChecked="{Binding CurrentOption, ConverterParameter=Triangle, Converter={StaticResource enumConverter}, Mode=TwoWay}" 
                      />

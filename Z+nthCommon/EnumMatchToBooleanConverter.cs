@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace Simplex
+namespace Z_nthCommon
 {
     public class EnumMatchToBooleanConverter : IValueConverter
     {

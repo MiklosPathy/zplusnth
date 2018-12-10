@@ -9,9 +9,6 @@ using Z_nthCommon;
 
 namespace Simplex
 {
-    public enum Waveform { Sine, Saw, Square, Triangle };
-
-
     public class SiSy : Zplusnthbase
     {
         private double[] Phase = new double[maxPolyPhony];
@@ -32,24 +29,8 @@ namespace Simplex
                     {
                         double commonsinpart = 2 * Math.PI / WaveFormat.SampleRate * (Channels[channel].Freq + Bending);
                         Phase[channel] += commonsinpart;
-                        double correctedphase = Z_nthCommon.Phase.Correction(Phase[channel]);
-                        switch (CurrentOption)
-                        {
-                            case Waveform.Sine:
-                                currentsamplevalue += Math.Sin(correctedphase);
-                                break;
-                            case Waveform.Saw:
-                                currentsamplevalue += Z_nthCommon.Phase.Saw(correctedphase);
-                                break;
-                            case Waveform.Square:
-                                currentsamplevalue += Z_nthCommon.Phase.Square(correctedphase);
-                                break;
-                            case Waveform.Triangle:
-                                currentsamplevalue += Z_nthCommon.Phase.Triangle(correctedphase);
-                                break;
-                            default:
-                                break;
-                        }
+
+                        Z_nthCommon.Phase.Waveformswitcher(CurrentOption, Phase[channel], ref currentsamplevalue);
                     }
                     if (Channels[channel].State == ChannelState.KeyOff)
                     {

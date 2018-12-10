@@ -30,5 +30,27 @@ namespace Z_nthCommon
             if (phase > halfPI && phase < oneandhalfPI) return 1 - ((phase - halfPI) / halfPI);
             return ((phase - oneandhalfPI) / halfPI) - 1;
         }
+
+        static public void Waveformswitcher(Waveform CurrentOption, double phase, ref double currentsamplevalue)
+        {
+            double correctedphase = Z_nthCommon.Phase.Correction(phase);
+            switch (CurrentOption)
+            {
+                case Waveform.Sine:
+                    currentsamplevalue += Math.Sin(correctedphase);
+                    break;
+                case Waveform.Saw:
+                    currentsamplevalue += Z_nthCommon.Phase.Saw(correctedphase);
+                    break;
+                case Waveform.Square:
+                    currentsamplevalue += Z_nthCommon.Phase.Square(correctedphase);
+                    break;
+                case Waveform.Triangle:
+                    currentsamplevalue += Z_nthCommon.Phase.Triangle(correctedphase);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

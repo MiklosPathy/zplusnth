@@ -47,7 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChannelToStringConverter.cs" />
+    <Compile Include="EnumMatchToBooleanConverter.cs" />
     <Compile Include="Phase.cs" />
+    <Compile Include="Waveform.cs" />
     <Compile Include="Zplusnthbase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

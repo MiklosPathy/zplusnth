@@ -9,14 +9,15 @@ namespace TheSID
 {
     public class SID : Zplusnthbase
     {
-
-
         public double ModulatorMultiplier { get; set; }
         public bool Sync { get; set; }
         public bool Ring { get; set; }
 
         private double[] Phase = new double[maxPolyPhony];
         private double[] Phase2 = new double[maxPolyPhony];
+
+        public Waveform ModulatorWaveform { get; set; }
+        public Waveform Waveform { get; set; }
 
         public override int Read(short[] buffer, int offset, int sampleCount)
         {
@@ -35,7 +36,14 @@ namespace TheSID
                         Phase[channel] += commonsinpart;
                         Phase2[channel] += commonsinpart2;
 
-                        currentsamplevalue += Math.Sin(Phase[channel]) * (Ring ? Math.Sin(Phase2[channel]) : 1);
+                        double oscmod=0;
+                        double osc=0;
+
+                        Z_nthCommon.Phase.Waveformswitcher(ModulatorWaveform, Phase2[channel], ref oscmod);
+                        Z_nthCommon.Phase.Waveformswitcher(Waveform, Phase[channel], ref osc);
+
+                        currentsamplevalue += osc * (Ring ? oscmod : 1);
+                        //currentsamplevalue += Math.Sin(Phase[channel]) * (Ring ? Math.Sin(Phase2[channel]) : 1);
                     }
                     if (Channels[channel].State == ChannelState.KeyOff)
                     {
