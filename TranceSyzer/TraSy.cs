@@ -14,6 +14,7 @@ namespace TranceSyzer
         public double Spread { get; set; } = 0;
         public int Count { get; set; } = 7;
 
+        public Waveform CurrentOption { get; set; }
 
         public override int Read(short[] buffer, int offset, int sampleCount)
         {
@@ -50,7 +51,8 @@ namespace TranceSyzer
 
             for (int i = start; i < count; i++)
             {
-                result += Z_nthCommon.Phase.Saw(phase + i * spread);
+                Z_nthCommon.Phase.Waveformswitcher(CurrentOption, phase + i * spread, ref result);
+                //result += Z_nthCommon.Phase.Saw(phase + i * spread);
             }
             result = result / count;
 

@@ -48,7 +48,7 @@
         <Slider Value="{Binding ModulatorMultiplier, Mode=TwoWay}" Height="25" Margin="89,192,53,0" VerticalAlignment="Top" LargeChange="0.01" SmallChange="0.001" Maximum="2" TickPlacement="BottomRight" TickFrequency="0.1"/>
         <CheckBox IsChecked="{Binding Sync, Mode=TwoWay}" Content="Sync" HorizontalAlignment="Left" Margin="89,217,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.156,0.6"/>
         <CheckBox IsChecked="{Binding Ring, Mode=TwoWay}" Content="Ring" HorizontalAlignment="Left" Margin="89,237,0,0" VerticalAlignment="Top"/>
-        <Label Content="Modulator OSC base freq * " HorizontalAlignment="Left" Margin="93,163,0,0" VerticalAlignment="Top"/>
+        <Label Content="Modulator OSC base freq multiplier " HorizontalAlignment="Left" Margin="93,163,0,0" VerticalAlignment="Top"/>
         <Label Content="{Binding DesiredLatency, Mode=TwoWay}" HorizontalAlignment="Left" Height="25" Margin="10,255,0,0" VerticalAlignment="Top" Width="88"/>
         <ListBox 
             IsEnabled="False"
@@ -58,38 +58,40 @@
             ScrollViewer.VerticalScrollBarVisibility="Disabled"
             HorizontalAlignment="Left" Height="238" Margin="740,10,0,0" VerticalAlignment="Top" Width="42" Opacity="0.2"/>
 
-        <RadioButton Content="Sine" HorizontalAlignment="Left" Height="18" Margin="93,21,0,0" VerticalAlignment="Top" Width="91" 
+        <RadioButton Content="Sine" HorizontalAlignment="Left" Height="18" Margin="97,62,0,0" VerticalAlignment="Top" Width="91" 
             GroupName="ModulatorWaveform"
             IsChecked="{Binding ModulatorWaveform, ConverterParameter=Sine, Converter={StaticResource enumConverter}, Mode=TwoWay}"  
                      />
-        <RadioButton Content="Square" HorizontalAlignment="Left" Height="18" Margin="93,75,0,0" VerticalAlignment="Top" Width="91" 
+        <RadioButton Content="Square" HorizontalAlignment="Left" Height="18" Margin="97,116,0,0" VerticalAlignment="Top" Width="91" 
             GroupName="ModulatorWaveform"
             IsChecked="{Binding ModulatorWaveform, ConverterParameter=Square, Converter={StaticResource enumConverter}, Mode=TwoWay}"  
                      />
-        <RadioButton Content="Saw" HorizontalAlignment="Left" Height="18" Margin="93,57,0,0" VerticalAlignment="Top" Width="91" 
+        <RadioButton Content="Saw" HorizontalAlignment="Left" Height="18" Margin="97,98,0,0" VerticalAlignment="Top" Width="91" 
             GroupName="ModulatorWaveform"
             IsChecked="{Binding ModulatorWaveform, ConverterParameter=Saw, Converter={StaticResource enumConverter}, Mode=TwoWay}" 
                      />
-        <RadioButton Content="Triangle" HorizontalAlignment="Left" Height="18" Margin="93,39,0,0" VerticalAlignment="Top" Width="91" 
+        <RadioButton Content="Triangle" HorizontalAlignment="Left" Height="18" Margin="97,80,0,0" VerticalAlignment="Top" Width="91" 
             GroupName="ModulatorWaveform"
             IsChecked="{Binding ModulatorWaveform, ConverterParameter=Triangle, Converter={StaticResource enumConverter}, Mode=TwoWay}" 
                      />
-        <RadioButton Content="Sine" HorizontalAlignment="Left" Height="18" Margin="206,21,0,0" VerticalAlignment="Top" Width="91" 
+        <RadioButton Content="Sine" HorizontalAlignment="Left" Height="18" Margin="210,62,0,0" VerticalAlignment="Top" Width="91" 
             GroupName="Waveform"
             IsChecked="{Binding Waveform, ConverterParameter=Sine, Converter={StaticResource enumConverter}, Mode=TwoWay}"  
                      />
-        <RadioButton Content="Square" HorizontalAlignment="Left" Height="18" Margin="206,75,0,0" VerticalAlignment="Top" Width="91" 
+        <RadioButton Content="Square" HorizontalAlignment="Left" Height="18" Margin="210,116,0,0" VerticalAlignment="Top" Width="91" 
             GroupName="Waveform"
             IsChecked="{Binding Waveform, ConverterParameter=Square, Converter={StaticResource enumConverter}, Mode=TwoWay}"  
                      />
-        <RadioButton Content="Saw" HorizontalAlignment="Left" Height="18" Margin="206,57,0,0" VerticalAlignment="Top" Width="91" 
+        <RadioButton Content="Saw" HorizontalAlignment="Left" Height="18" Margin="210,98,0,0" VerticalAlignment="Top" Width="91" 
             GroupName="Waveform"
             IsChecked="{Binding Waveform, ConverterParameter=Saw, Converter={StaticResource enumConverter}, Mode=TwoWay}" 
                      />
-        <RadioButton Content="Triangle" HorizontalAlignment="Left" Height="18" Margin="206,39,0,0" VerticalAlignment="Top" Width="91" 
+        <RadioButton Content="Triangle" HorizontalAlignment="Left" Height="18" Margin="210,80,0,0" VerticalAlignment="Top" Width="91" 
             GroupName="Waveform"
             IsChecked="{Binding Waveform, ConverterParameter=Triangle, Converter={StaticResource enumConverter}, Mode=TwoWay}" 
                      />
+        <Label Content="Modulator" HorizontalAlignment="Left" Margin="97,33,0,0" VerticalAlignment="Top" Height="24"/>
+        <Label Content="Oscillator" HorizontalAlignment="Left" Margin="210,33,0,0" VerticalAlignment="Top" Height="24"/>
 
     </Grid>
 </Window>

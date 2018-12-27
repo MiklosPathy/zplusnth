@@ -42,6 +42,7 @@ namespace TheSID
                         Z_nthCommon.Phase.Waveformswitcher(ModulatorWaveform, Phase2[channel], ref oscmod);
                         Z_nthCommon.Phase.Waveformswitcher(Waveform, Phase[channel], ref osc);
 
+                        //Ring modulation is actually a multiplication. http://media.aau.dk/~sts/ad/modulation.html
                         currentsamplevalue += osc * (Ring ? oscmod : 1);
                         //currentsamplevalue += Math.Sin(Phase[channel]) * (Ring ? Math.Sin(Phase2[channel]) : 1);
                     }
