@@ -151,8 +151,8 @@
                     </TransformGroup>
                 </Label.RenderTransform>
             </Label>
-            <Slider x:Name="slider_Echo_Freq" Value="{Binding Echo_Freq,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="537,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="19999" Minimum="1" IsDirectionReversed="True"/>
-            <Slider x:Name="slider_Echo_Rate" Value="{Binding Echo_Rate,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="562,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="100"/>
+            <Slider x:Name="slider_Echo_Freq" Value="{Binding Echo.Freq,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="537,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="19999" Minimum="1" IsDirectionReversed="True"/>
+            <Slider x:Name="slider_Echo_Rate" Value="{Binding Echo.Rate,Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="562,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="100"/>
             <Label x:Name="label1_Copy" Content="Echo" HorizontalAlignment="Left" Margin="537,184,0,0" VerticalAlignment="Top" Height="25"/>
             <Label x:Name="label2_Copy1" Content="Delay" HorizontalAlignment="Left" Margin="523,158,0,0" VerticalAlignment="Top"/>
             <Label x:Name="label2_Copy2" Content="Rate" HorizontalAlignment="Left" Margin="557,158,0,0" VerticalAlignment="Top"/>

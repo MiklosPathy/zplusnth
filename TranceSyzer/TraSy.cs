@@ -9,6 +9,9 @@ namespace TranceSyzer
 {
     public class TraSy : Zplusnthbase
     {
+        public MoogFilter Filter { get; } = new MoogFilter();
+        public Echo Echo { get; } = new Echo();
+
         private readonly double[] Phase = new double[maxPolyPhony];
 
         public double Spread { get; set; } = 0;
@@ -38,8 +41,10 @@ namespace TranceSyzer
                     }
                     if (Phase[channel] > 2 * Math.PI) Phase[channel] -= 2 * Math.PI;
                 }
-                currentsamplevalue = currentsamplevalue * short.MaxValue / CurrentPolyphony;
-                buffer[sample + offset] = (short)currentsamplevalue;
+                currentsamplevalue = currentsamplevalue / CurrentPolyphony;
+                Filter.Process(ref currentsamplevalue);
+                Echo.Process(ref currentsamplevalue);
+                buffer[sample + offset] = OutLimiter(ref currentsamplevalue);
             }
             return sampleCount;
         }

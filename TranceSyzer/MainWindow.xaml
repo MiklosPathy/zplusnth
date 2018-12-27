@@ -92,6 +92,33 @@
             GroupName="Waveform"
             IsChecked="{Binding CurrentOption, ConverterParameter=Triangle, Converter={StaticResource enumConverter}, Mode=TwoWay}" 
                      />
+        <Slider x:Name="slider_Resonance" Value="{Binding Filter.Resonance, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="442,12,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="1" LargeChange="0.001" SmallChange="0.001"/>
+        <Label x:Name="label_Resonance" Content="Reso" HorizontalAlignment="Left" Margin="424,140,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Slider x:Name="slider_Frequency" Value="{Binding Filter.Frequency, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="418,12,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="1" SmallChange="0.001" LargeChange="0.001"/>
+        <Label x:Name="label_Frequency" Content="Freq" HorizontalAlignment="Left" Margin="400,142,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Slider x:Name="slider_Echo_Freq" Value="{Binding Echo.Freq, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="537,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="19999" Minimum="1" IsDirectionReversed="True"/>
+        <Slider x:Name="slider_Echo_Rate" Value="{Binding Echo.Rate, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="562,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="100"/>
+        <Label x:Name="label1_Copy" Content="Echo" HorizontalAlignment="Left" Margin="537,184,0,0" VerticalAlignment="Top" Height="25"/>
+        <Label x:Name="label2_Copy1" Content="Delay" HorizontalAlignment="Left" Margin="523,158,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label2_Copy2" Content="Rate" HorizontalAlignment="Left" Margin="557,158,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

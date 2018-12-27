@@ -52,8 +52,6 @@ namespace PunkOrgan
 
     public class PunkHammond : Zplusnthbase
     {
-        private static readonly int echobuffersize = 20000;
-
         public DrawBar[] Drawbars { get; set; }
 
         private int leslie_rate;
@@ -63,13 +61,7 @@ namespace PunkOrgan
 
         double Leslie_Phase = 0;
 
-        private int echo_rate;
-        public int Echo_Rate { get { return echo_rate; } set { echo_rate = value; NotifyPropertyChanged(); } }
-        private int echo_freq;
-        public int Echo_Freq { get { return echo_freq; } set { echo_freq = value; NotifyPropertyChanged(); } }
-
-        private double[] echobuffer;
-        int echophase = 0;
+        public Echo Echo { get; } = new Echo();
 
         private PunkOrganPreset[] presets;
 
@@ -90,10 +82,6 @@ namespace PunkOrgan
 
             Leslie_Freq = 0;
             Leslie_Rate = 0;
-
-            echobuffer = new double[echobuffersize];
-            Echo_Freq = 0;
-            Echo_Rate = 0;
 
             OverDrive = 10;
             Amplify = 1;
@@ -135,7 +123,7 @@ namespace PunkOrgan
                             if (Drawbars[drawbar].Phase[channel] >= 0)
                             {
                                 if (Drawbars[drawbar].Phase[channel] >= 2 * Math.PI) Drawbars[drawbar].Phase[channel] -= 2 * Math.PI;
-                                currentsamplevalue += Simpleoverdrive(Math.Sin(Drawbars[drawbar].Phase[channel]), (double)overDrive/10) * Drawbars[drawbar].Volume;
+                                currentsamplevalue += Simpleoverdrive(Math.Sin(Drawbars[drawbar].Phase[channel]), (double)overDrive / 10) * Drawbars[drawbar].Volume;
                             }
                         }
                     }
@@ -158,31 +146,13 @@ namespace PunkOrgan
                 currentsamplevalue = Simpleoverdrive(currentsamplevalue, amplify);
                 #endregion Volume/Overdrive/Limit
 
-                #region Echo
-                currentsamplevalue = currentsamplevalue + echobuffer[Limitechophase(echophase + Echo_Freq)] * Echo_Rate / 100;
-                echobuffer[echophase] = currentsamplevalue;
-                echophase++;
-                echophase = Limitechophase(echophase);
-                #endregion Echo
-
-                #region Out limiter
-                currentsamplevalue = currentsamplevalue * short.MaxValue;
-                if (currentsamplevalue > short.MaxValue) currentsamplevalue = short.MaxValue;
-                if (currentsamplevalue < short.MinValue) currentsamplevalue = short.MinValue;
-                #endregion Out limiter
-
-                buffer[sample + offset] = (short)currentsamplevalue;
+                Echo.Process(ref currentsamplevalue);
+                buffer[sample + offset] = OutLimiter(ref currentsamplevalue);
             }
             return sampleCount;
         }
 
-        //Buffer looping
-        private int Limitechophase(int phase)
-        {
-            if (phase < 0) return echobuffersize + phase;
-            if (phase >= echobuffersize) return phase - echobuffersize;
-            return phase;
-        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -288,8 +258,8 @@ namespace PunkOrgan
             Leslie_Freq = preset.LeslieFreq;
             Leslie_Rate = preset.LeslieRate;
 
-            Echo_Freq = preset.EchoFreq;
-            Echo_Rate = preset.EchoRate;
+            Echo.Freq = preset.EchoFreq;
+            Echo.Rate = preset.EchoRate;
 
             NotifyPropertyChanged();
         }
@@ -334,8 +304,8 @@ namespace PunkOrgan
             preset.LeslieFreq = Leslie_Freq;
             preset.LeslieRate = Leslie_Rate;
 
-            preset.EchoFreq = Echo_Freq;
-            preset.EchoRate = Echo_Rate;
+            preset.EchoFreq = Echo.Freq;
+            preset.EchoRate = Echo.Rate;
 
             return preset;
         }

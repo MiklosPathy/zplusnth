@@ -76,6 +76,14 @@ namespace Z_nthCommon
             }
         }
 
+        protected short OutLimiter(ref double currentsamplevalue)
+        {
+            currentsamplevalue = currentsamplevalue * short.MaxValue;
+            if (currentsamplevalue > short.MaxValue) currentsamplevalue = short.MaxValue;
+            if (currentsamplevalue < short.MinValue) currentsamplevalue = short.MinValue;
+            return (short)currentsamplevalue;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
