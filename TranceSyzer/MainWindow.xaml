@@ -34,8 +34,8 @@
                 </TransformGroup>
             </Label.RenderTransform>
         </Label>
-        <Slider x:Name="slider_Spread" Value="{Binding Spread, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="180,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="0.2" LargeChange="0.0001" SmallChange="0.0001"/>
-        <Label x:Name="label_Spread" Content="Spread" HorizontalAlignment="Left" Margin="154,138,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
+        <Slider x:Name="slider_Spread" Value="{Binding Spread, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="135,12,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="0.5" LargeChange="0.0001" SmallChange="0.0001"/>
+        <Label x:Name="label_Spread" Content="Spread" HorizontalAlignment="Left" Margin="109,140,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
             <Label.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -45,8 +45,8 @@
                 </TransformGroup>
             </Label.RenderTransform>
         </Label>
-        <Slider x:Name="slider_Count" Value="{Binding Count, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="155,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="20" SmallChange="1" Minimum="1"/>
-        <Label x:Name="label_Count" Content="Count" HorizontalAlignment="Left" Margin="130,141,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
+        <Slider x:Name="slider_Count" Value="{Binding Count, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="110,12,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="5" SmallChange="1" Minimum="1"/>
+        <Label x:Name="label_Count" Content="Count" HorizontalAlignment="Left" Margin="85,142,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
             <Label.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -119,6 +119,17 @@
         <Label x:Name="label1_Copy" Content="Echo" HorizontalAlignment="Left" Margin="537,184,0,0" VerticalAlignment="Top" Height="25"/>
         <Label x:Name="label2_Copy1" Content="Delay" HorizontalAlignment="Left" Margin="523,158,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label2_Copy2" Content="Rate" HorizontalAlignment="Left" Margin="557,158,0,0" VerticalAlignment="Top"/>
+        <Slider x:Name="slider_Mix" Value="{Binding Mix, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="160,12,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Maximum="1" LargeChange="0.0001" SmallChange="0.0001"/>
+        <Label x:Name="label_Mix" Content="Mix" HorizontalAlignment="Left" Margin="150,142,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
 
     </Grid>
 </Window>

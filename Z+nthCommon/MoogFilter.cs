@@ -15,7 +15,7 @@ namespace Z_nthCommon
         private double f, p, q;             //filter coefficients
         private double b0 = 1, b1 = 1, b2 = 1, b3 = 1, b4 = 1;  //filter buffers (beware denormals!)
         private double t1, t2;              //temporary buffers
-        private double frequency = 0.5d, resonance = 0.5d;
+        private double frequency = 1d, resonance = 0d;
 
         public MoogFilter()
         {

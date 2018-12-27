@@ -16,6 +16,7 @@ namespace TranceSyzer
 
         public double Spread { get; set; } = 0;
         public int Count { get; set; } = 7;
+        public double Mix { get; set; } = 1;
 
         public Waveform CurrentOption { get; set; }
 
@@ -33,7 +34,7 @@ namespace TranceSyzer
                     {
                         double commonsinpart = 2 * Math.PI / WaveFormat.SampleRate * (Channels[channel].Freq + Bending);
                         Phase[channel] += commonsinpart;
-                        currentsamplevalue += SuperSaw(Phase[channel], Count, Spread);
+                        currentsamplevalue += SuperSaw(Phase[channel]);
                     }
                     if (Channels[channel].State == ChannelState.KeyOff)
                     {
@@ -49,17 +50,21 @@ namespace TranceSyzer
             return sampleCount;
         }
 
-        private double SuperSaw(double phase, int count, double spread)
+        private double SuperSaw(double phase)
         {
             double result = 0;
-            int start = 0 - (count / 2);
+            double result2 = 0;
 
-            for (int i = start; i < count; i++)
+            for (int i = 1; i <= Count; i++)
             {
-                Z_nthCommon.Phase.Waveformswitcher(CurrentOption, phase + i * spread, ref result);
-                //result += Z_nthCommon.Phase.Saw(phase + i * spread);
+                Z_nthCommon.Phase.Waveformswitcher(CurrentOption, phase + i * Spread, ref result);
+                Z_nthCommon.Phase.Waveformswitcher(CurrentOption, phase - i * Spread, ref result);
             }
-            result = result / count;
+            result = result / (Count * 2);
+
+            Z_nthCommon.Phase.Waveformswitcher(CurrentOption, phase * Spread, ref result2);
+
+            result = result * Mix + result2 * (1 - Mix);
 
             return result;
         }
