@@ -25,7 +25,7 @@ namespace GoodLearner
         int phaserphase = 0;
         double phaserlfophase = 0;
 
-        public Waveform CurrentOption { get; set; }
+        public Waveform CurrentOption { get; set; } = Waveform.Saw;
 
         public Eminent()
         {
