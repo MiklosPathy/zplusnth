@@ -18,9 +18,14 @@ namespace GoodLearner
         private int phaser_delay;
         public int Phaser_Delay { get { return phaser_delay; } set { phaser_delay = value; NotifyPropertyChanged(); } }
 
+
+        private readonly double[] Phase = new double[maxPolyPhony];
+
         private double[] phaserbuffer;
         int phaserphase = 0;
         double phaserlfophase = 0;
+
+        public Waveform CurrentOption { get; set; }
 
         public Eminent()
         {
@@ -31,7 +36,7 @@ namespace GoodLearner
 
         protected override void SavePresets()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         protected override void GetPreset(int presetnum)
@@ -56,21 +61,47 @@ namespace GoodLearner
 
         public override int Read(short[] buffer, int offset, int sampleCount)
         {
-            double currentsamplevalue = 0;
+            for (int sample = 0; sample < sampleCount; sample++)
+            {
+                double currentsamplevalue = 0;
 
-            #region Phaser
-            phaserlfophase += 2 * Math.PI / WaveFormat.SampleRate * Phaser_Freq / 100;
-            if (phaserlfophase > 2 * Math.PI) phaserlfophase -= 2 * Math.PI;
-            int phaser = (int)Math.Round((Math.Sin(phaserlfophase) * WaveFormat.SampleRate / Phaser_Delay) + WaveFormat.SampleRate / Phaser_Delay / 2); //0-50 ms delay
-                                                                                                                                                        //currentsamplevalue = currentsamplevalue + phaserbuffer[limitechophase(phaserphase - phaser)] * ((double)Phaser_Mix_Rate / 100);
-                                                                                                                                                        //phaserbuffer[phaserphase] = phaserbuffer[phaserphase] + currentsamplevalue * (double)Phaser_Feedback_Rate / 100 / 2;
-            phaserbuffer[phaserphase] = currentsamplevalue;
-            currentsamplevalue = currentsamplevalue + phaserbuffer[limitechophase(phaserphase - phaser)] * ((double)Phaser_Mix_Rate / 100);
-            phaserphase++;
-            phaserphase = limitechophase(phaserphase);
-            #endregion Phaser
+                for (int channel = 0; channel < CurrentPolyphony; channel++)
+                {
+                    if (Channels[channel].State == ChannelState.KeyOn) Phase[channel] = 0;
+                    if (Channels[channel].State == ChannelState.KeyOn || Channels[channel].State == ChannelState.ReKeyOn) Channels[channel].State = ChannelState.Active;
+                    if (Channels[channel].State == ChannelState.Active || Channels[channel].State == ChannelState.KeyOff)
+                    {
+                        double commonsinpart = 2 * Math.PI / WaveFormat.SampleRate * (Channels[channel].Freq + Bending);
+                        Phase[channel] += commonsinpart;
+                        Z_nthCommon.Phase.Waveformswitcher(CurrentOption, Phase[channel], ref currentsamplevalue);
+                    }
+                    if (Channels[channel].State == ChannelState.KeyOff)
+                    {
+                        if (Phase[channel] > 2 * Math.PI) Channels[channel].State = ChannelState.Inactive;
+                    }
+                    if (Phase[channel] > 2 * Math.PI) Phase[channel] -= 2 * Math.PI;
+                }
+                currentsamplevalue = currentsamplevalue / CurrentPolyphony;
 
-            throw new NotImplementedException();
+
+                #region Phaser
+                phaserlfophase += 2 * Math.PI / WaveFormat.SampleRate * Phaser_Freq / 100;
+                if (phaserlfophase > 2 * Math.PI) phaserlfophase -= 2 * Math.PI;
+                int phaser = (int)Math.Round((Math.Sin(phaserlfophase) * WaveFormat.SampleRate / Phaser_Delay) + WaveFormat.SampleRate / Phaser_Delay / 2); //0-50 ms delay
+                                                                                                                                                            //currentsamplevalue = currentsamplevalue + phaserbuffer[limitechophase(phaserphase - phaser)] * ((double)Phaser_Mix_Rate / 100);
+                                                                                                                                                            //phaserbuffer[phaserphase] = phaserbuffer[phaserphase] + currentsamplevalue * (double)Phaser_Feedback_Rate / 100 / 2;
+                phaserbuffer[phaserphase] = currentsamplevalue;
+                currentsamplevalue = currentsamplevalue + phaserbuffer[limitechophase(phaserphase - phaser)] * ((double)Phaser_Mix_Rate / 100);
+                phaserphase++;
+                phaserphase = limitechophase(phaserphase);
+                #endregion Phaser
+
+                //Filter.Process(ref currentsamplevalue);
+                //Echo.Process(ref currentsamplevalue);
+                buffer[sample + offset] = OutLimiter(ref currentsamplevalue);
+            }
+
+            return sampleCount;
         }
     }
 }

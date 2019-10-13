@@ -20,9 +20,22 @@ namespace GoodLearner
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Eminent synth = new Eminent();
+
         public MainWindow()
         {
+            synth.LoadState();
+            //synth.LoadPresets();
+            DataContext = synth;
+            Closing += synth.Window_Closed;
+            KeyDown += synth.Window_KeyDown;
+            KeyUp += synth.Window_KeyUp;
             InitializeComponent();
+        }
+
+        private void slider_Bending_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            slider_Bending.Value = 0;
         }
     }
 }
