@@ -54,30 +54,110 @@
             ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
             ScrollViewer.VerticalScrollBarVisibility="Disabled"
             HorizontalAlignment="Left" Height="238" Margin="340,15,0,0" VerticalAlignment="Top" Width="42" Opacity="0.2"/>
-        <RadioButton Content="Sine" HorizontalAlignment="Left" Height="18" Margin="145,37,0,0" VerticalAlignment="Top" Width="91" 
+        <RadioButton Content="Sine" HorizontalAlignment="Left" Height="18" Margin="266,33,0,0" VerticalAlignment="Top" Width="91" 
                      GroupName="Waveform"
                      IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, 
                                  Converter={StaticResource enumConverter},
                                  ConverterParameter=Sine}"  
                      />
 
-        <RadioButton Content="Square" HorizontalAlignment="Left" Height="18" Margin="145,91,0,0" VerticalAlignment="Top" Width="91" 
+        <RadioButton Content="Square" HorizontalAlignment="Left" Height="18" Margin="266,87,0,0" VerticalAlignment="Top" Width="91" 
                      GroupName="Waveform"
                      IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, 
                                  Converter={StaticResource enumConverter},
                                  ConverterParameter=Square}"  
                      />
-        <RadioButton Content="Saw" HorizontalAlignment="Left" Height="18" Margin="145,73,0,0" VerticalAlignment="Top" Width="91" 
+        <RadioButton Content="Saw" HorizontalAlignment="Left" Height="18" Margin="266,69,0,0" VerticalAlignment="Top" Width="91" 
                      GroupName="Waveform"
                      IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, 
                                  Converter={StaticResource enumConverter},
                                  ConverterParameter=Saw}" 
                      />
-        <RadioButton Content="Triangle" HorizontalAlignment="Left" Height="18" Margin="145,55,0,0" VerticalAlignment="Top" Width="91" 
+        <RadioButton Content="Triangle" HorizontalAlignment="Left" Height="18" Margin="266,51,0,0" VerticalAlignment="Top" Width="91" 
                      GroupName="Waveform"
                      IsChecked="{Binding CurrentOption, ConverterParameter=Triangle, Converter={StaticResource enumConverter}, Mode=TwoWay}" 
                      />
-        <Slider x:Name="slider_PWM" Value="{Binding PWM, Mode=TwoWay}" HorizontalAlignment="Left" Margin="145,140,0,0" VerticalAlignment="Top" Width="91" Maximum="2" Minimum="1" SmallChange="0.01"/>
+        <Slider x:Name="slider_PWM" Value="{Binding PWM, Mode=TwoWay}" HorizontalAlignment="Left" Margin="159,77,0,0" VerticalAlignment="Top" Width="140" Maximum="2" Minimum="1" SmallChange="0.01" RenderTransformOrigin="0.5,0.5">
+            <Slider.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Slider.RenderTransform>
+        </Slider>
+        <Label x:Name="label_PWM" Content="PWM" HorizontalAlignment="Left" Margin="202,137,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Slider x:Name="slider_PWM_Max" Value="{Binding PWM_Max, Mode=TwoWay}" HorizontalAlignment="Left" Margin="128,77,0,0" VerticalAlignment="Top" Width="140" Maximum="2" Minimum="1" SmallChange="0.01" RenderTransformOrigin="0.5,0.5">
+            <Slider.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Slider.RenderTransform>
+        </Slider>
+        <Label x:Name="label_PWM_Max" Content="PWM Max" HorizontalAlignment="Left" Margin="144,135,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Slider x:Name="slider_PWM_Min" Value="{Binding PWM_Min, Mode=TwoWay}" HorizontalAlignment="Left" Margin="97,77,0,0" VerticalAlignment="Top" Width="140" Maximum="2" Minimum="1" SmallChange="0.01" RenderTransformOrigin="0.5,0.5">
+            <Slider.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Slider.RenderTransform>
+        </Slider>
+        <Label x:Name="label_PWM_Min" Content="PWM Min" HorizontalAlignment="Left" Margin="113,135,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Slider x:Name="slider_PWM_Freq" Value="{Binding PWM_Freq, Mode=TwoWay}" HorizontalAlignment="Left" Margin="68,77,0,0" VerticalAlignment="Top" Width="140" Maximum="20" Minimum="0" SmallChange="0.1" RenderTransformOrigin="0.5,0.5">
+            <Slider.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Slider.RenderTransform>
+        </Slider>
+        <Label x:Name="label_PWM_Freq" Content="PWM Freq" HorizontalAlignment="Left" Margin="78,135,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+
 
     </Grid>
 </Window>

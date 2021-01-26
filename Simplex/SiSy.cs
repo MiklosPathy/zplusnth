@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Input;
 using Z_nthCommon;
 
@@ -14,7 +15,31 @@ namespace Simplex
         private double[] Phase = new double[maxPolyPhony];
 
         public Waveform CurrentOption { get; set; }
-        public double PWM { get; set; } = 1;
+        private double _PWM = 1;
+        public double PWM { get { return _PWM; } set { _PWM = value; if (PWM < PWM_Min) PWM = PWM_Min; if (PWM > PWM_Max) PWM = PWM_Max; NotifyPropertyChanged(); } }
+        private double _PWM_Min = 1;
+        public double PWM_Min { get { return _PWM_Min; } set { _PWM_Min = value; if (PWM_Min > PWM_Max) PWM_Min = PWM_Max; NotifyPropertyChanged(); if (PWM < PWM_Min) PWM = PWM_Min; } }
+        private double _PWM_Max = 2;
+        public double PWM_Max { get { return _PWM_Max; } set { _PWM_Max = value; if (PWM_Max < PWM_Min) PWM_Max = PWM_Min; NotifyPropertyChanged(); if (PWM > PWM_Max) PWM = PWM_Max; } }
+        public double PWM_Freq { get; set; } = 0;
+        private int PWM_Direction = 1;
+
+        private Timer PWM_LFO = new Timer(1);
+
+        public SiSy()
+        {
+            PWM_LFO.Elapsed += PWM_LFO_Elapsed;
+            PWM_LFO.AutoReset = true;
+            PWM_LFO.Start();
+        }
+
+        private void PWM_LFO_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            double PWMTarget = PWM + PWM_Direction * PWM_Freq / 100;
+            if (PWMTarget >= PWM_Max) { PWMTarget = PWM_Max; PWM_Direction = -1; }
+            if (PWMTarget <= PWM_Min) { PWMTarget = PWM_Min; PWM_Direction = 1; }
+            PWM = PWMTarget;
+        }
 
         public override int Read(short[] buffer, int offset, int sampleCount)
         {
