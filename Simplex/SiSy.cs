@@ -14,6 +14,7 @@ namespace Simplex
         private double[] Phase = new double[maxPolyPhony];
 
         public Waveform CurrentOption { get; set; }
+        public double PWM { get; set; } = 50;
 
         public override int Read(short[] buffer, int offset, int sampleCount)
         {
@@ -30,7 +31,7 @@ namespace Simplex
                         double commonsinpart = 2 * Math.PI / WaveFormat.SampleRate * (Channels[channel].Freq + Bending);
                         Phase[channel] += commonsinpart;
 
-                        Z_nthCommon.Phase.Waveformswitcher(CurrentOption, Phase[channel], ref currentsamplevalue);
+                        Z_nthCommon.Phase.Waveformswitcher(CurrentOption, Phase[channel], ref currentsamplevalue, PWM);
                     }
                     if (Channels[channel].State == ChannelState.KeyOff)
                     {
