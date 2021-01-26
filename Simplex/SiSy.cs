@@ -14,7 +14,7 @@ namespace Simplex
         private double[] Phase = new double[maxPolyPhony];
 
         public Waveform CurrentOption { get; set; }
-        public double PWM { get; set; } = 50;
+        public double PWM { get; set; } = 1;
 
         public override int Read(short[] buffer, int offset, int sampleCount)
         {

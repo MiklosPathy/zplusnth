@@ -77,7 +77,7 @@
                      GroupName="Waveform"
                      IsChecked="{Binding CurrentOption, ConverterParameter=Triangle, Converter={StaticResource enumConverter}, Mode=TwoWay}" 
                      />
-        <Slider x:Name="slider_PWM" Value="{Binding PWM, Mode=TwoWay}" HorizontalAlignment="Left" Margin="145,140,0,0" VerticalAlignment="Top" Width="91" Maximum="99" Minimum="1" SmallChange="1"/>
+        <Slider x:Name="slider_PWM" Value="{Binding PWM, Mode=TwoWay}" HorizontalAlignment="Left" Margin="145,140,0,0" VerticalAlignment="Top" Width="91" Maximum="2" Minimum="1" SmallChange="0.01"/>
 
     </Grid>
 </Window>
