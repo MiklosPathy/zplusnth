@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Z_nthCommon ="clr-namespace:Z_nthCommon;assembly=Z+nthCommon"
         mc:Ignorable="d"
-        Title="Z+nht - PunkOrgan" Height="342" Width="611">
+        Title="Z+nht - PunkOrgan" Height="342" Width="611" ResizeMode="CanResizeWithGrip">
     <Window.Resources>
         <Z_nthCommon:ChannelToStringConverter x:Key="ChannelToStringConverter" />
     </Window.Resources>

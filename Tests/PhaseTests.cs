@@ -94,5 +94,29 @@ namespace Tests
             Assert.AreEqual(values[9], -1);
 
         }
+
+        [TestMethod]
+        public void CorrectionTest()
+        {
+            Assert.AreEqual(Phase.Correction(-Phase.twoPI - Phase.twoPI), 0);
+            Assert.AreEqual(Phase.Correction(-Phase.twoPI - Phase.oneandhalfPI), Phase.halfPI);
+            Assert.AreEqual(Phase.Correction(-Phase.twoPI - Math.PI), Math.PI);
+            Assert.AreEqual(Phase.Correction(-Phase.twoPI - Phase.halfPI), Phase.oneandhalfPI);
+            Assert.AreEqual(Phase.Correction(-Phase.twoPI), 0);
+            Assert.AreEqual(Phase.Correction(-Phase.oneandhalfPI), Phase.halfPI);
+            Assert.AreEqual(Phase.Correction(-Math.PI), Math.PI);
+            Assert.AreEqual(Phase.Correction(-Phase.halfPI), Phase.oneandhalfPI);
+            Assert.AreEqual(Phase.Correction(0), 0);
+            Assert.AreEqual(Phase.Correction(Phase.halfPI), Phase.halfPI);
+            Assert.AreEqual(Phase.Correction(Math.PI), Math.PI);
+            Assert.AreEqual(Phase.Correction(Phase.oneandhalfPI), Phase.oneandhalfPI);
+            Assert.AreEqual(Phase.Correction(Phase.twoPI), 0);
+            Assert.AreEqual(Phase.Correction(Phase.twoPI + Phase.halfPI), Phase.halfPI);
+            Assert.AreEqual(Phase.Correction(Phase.twoPI + Math.PI), Math.PI);
+            Assert.AreEqual(Phase.Correction(Phase.twoPI + Phase.oneandhalfPI), Phase.oneandhalfPI);
+            Assert.AreEqual(Phase.Correction(Phase.twoPI + Phase.twoPI), 0);
+
+
+        }
     }
 }

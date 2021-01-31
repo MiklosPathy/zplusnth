@@ -7,15 +7,18 @@ namespace Z_nthCommon
     /// </summary>
     static public class Phase
     {
-        static private readonly double halfPI = Math.PI / 2;
-        static private readonly double oneandhalfPI = Math.PI * 1.5;
-        static private readonly double twoPI = Math.PI * 2;
+        public const double halfPI = Math.PI / 2;
+        public const double oneandhalfPI = Math.PI * 1.5;
+        public const double twoPI = Math.PI * 2;
+
+        public const int SuperSawSpreadCount = 3;
+        public const int SuperSawSpreadCountDivider = (SuperSawSpreadCount * 2) + 1;
 
         static public double Correction(double phase)
         {
-            if (phase >= 0 && phase < 2 * Math.PI) return phase;
+            if (phase >= 0 && phase < twoPI) return phase;
             if (phase == 2 * Math.PI) return 0;
-            return phase - (Math.Floor(phase / (2 * Math.PI)) * 2 * Math.PI);
+            return phase - (Math.Floor(phase / twoPI) * twoPI);
         }
 
         static public double Square(double phase, double p = 1)
@@ -27,9 +30,25 @@ namespace Z_nthCommon
             return phase < pulsepos ? 1 : -1;
         }
 
-        static public double Saw(double phase)
+        static public double Saw(double phase, double p = 1)
         {
-            return phase <= Math.PI ? phase / Math.PI : ((phase - Math.PI) / Math.PI) - 1;
+            if (p == 1)
+            {
+                return phase <= Math.PI ? phase / Math.PI : ((phase - Math.PI) / Math.PI) - 1;
+            }
+            //Supersaw.
+            //Well, not really. This is just phase shifting, not freq diff.
+            double result = Saw(phase);
+            p = p - 1;
+            p = p / 10;
+
+            for (int i = 1; i <= SuperSawSpreadCount; i++)
+            {
+                result += Saw(Correction(phase + i * p));
+                result += Saw(Correction(phase - i * p));
+            }
+            result = result / SuperSawSpreadCountDivider;
+            return result;
         }
 
         static public double Triangle(double phase, double p = 1)
@@ -77,7 +96,7 @@ namespace Z_nthCommon
                     currentsamplevalue += Z_nthCommon.Phase.Sine(correctedphase, p);
                     break;
                 case Waveform.Saw:
-                    currentsamplevalue += Z_nthCommon.Phase.Saw(correctedphase);
+                    currentsamplevalue += Z_nthCommon.Phase.Saw(correctedphase, p);
                     break;
                 case Waveform.Square:
                     currentsamplevalue += Z_nthCommon.Phase.Square(correctedphase, p);

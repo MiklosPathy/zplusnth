@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Simplex"
         xmlns:z_nthcommon="clr-namespace:Z_nthCommon;assembly=Z+nthCommon"
         mc:Ignorable="d"
-        Title="Z+nht - Simplex" Height="350" Width="611.752">
+        Title="Z+nht - Simplex" Height="415" Width="615.752" ResizeMode="CanResizeWithGrip">
     <Window.Resources>
         <z_nthcommon:EnumMatchToBooleanConverter x:Key="enumConverter" />
     </Window.Resources>
@@ -34,7 +34,7 @@
                     </TransformGroup>
                 </Label.RenderTransform>
             </Label>
-            <Slider x:Name="slider_Bending" Value="{Binding Bending}" HorizontalAlignment="Left" Margin="10,277,-74,0" VerticalAlignment="Top" Width="581" Maximum="200" Minimum="-200" SmallChange="1" Thumb.DragCompleted="slider_Bending_DragCompleted"/>
+            <Slider x:Name="slider_Bending" Value="{Binding Bending}" HorizontalAlignment="Left" Margin="10,260,10,0" VerticalAlignment="Top" Width="475" Maximum="200" Minimum="-200" SmallChange="1" Thumb.DragCompleted="slider_Bending_DragCompleted"/>
             <Slider x:Name="slider_Transpose" Value="{Binding Transpose, Mode=TwoWay}" HorizontalAlignment="Left" Height="148" Margin="60,10,0,0" VerticalAlignment="Top" Width="20" Orientation="Vertical" Minimum="-2" Maximum="2" SmallChange="1"/>
             <Label Content="{Binding DesiredLatency, Mode=TwoWay}" HorizontalAlignment="Left" Height="25" Margin="10,230,0,0" VerticalAlignment="Top" Width="88"/>
             <Label x:Name="label_Transpose" Content="Transpose" HorizontalAlignment="Left" Margin="13,136,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="1.054,0.904">
@@ -53,7 +53,7 @@
             DisplayMemberPath="Freq4Disp" 
             ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
             ScrollViewer.VerticalScrollBarVisibility="Disabled"
-            HorizontalAlignment="Left" Height="238" Margin="340,15,0,0" VerticalAlignment="Top" Width="42" Opacity="0.2"/>
+            HorizontalAlignment="Left" Height="238" Margin="443,10,0,0" VerticalAlignment="Top" Width="42" Opacity="0.2"/>
             <RadioButton Content="Sine" HorizontalAlignment="Left" Height="18" Margin="266,33,0,0" VerticalAlignment="Top" Width="91" 
                      GroupName="Waveform"
                      IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, 
