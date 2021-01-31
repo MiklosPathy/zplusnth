@@ -39,6 +39,9 @@ namespace TranceSyzer
                         Z_nthCommon.Phase.Waveformswitcher(CurrentOption, Phase[channel, 0], ref mainvoice);
 
                         //Detunes
+                        //Detune improvements needed:
+                        //Accurate cent calculation (log)
+                        //2 first detune half , others 1, 2, 3... * +-spread distance
                         double detunes = 0;
                         for (int i = 1; i <= Count; i++)
                         {
