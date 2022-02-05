@@ -14,7 +14,7 @@ namespace MidiTest
         static void Main(string[] args)
         {
             var strictMode = false;
-            var mifi = new MidiFile(@"demo.mid", strictMode);
+            var mifi = new MidiFile(@"lamourtoujours.mid", strictMode);
             MidiEventsByTick = mifi.Events.SelectMany(x => x).OrderBy(x => x.AbsoluteTime).
                  GroupBy(x => x.AbsoluteTime, x => x).ToDictionary(x => x.Key, x => x.ToArray());
 
